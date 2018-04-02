@@ -1,6 +1,5 @@
 package assignment5;
 
-import javax.print.DocFlavor;
 import java.util.Iterator;
 import java.util.List;
 
@@ -160,7 +159,7 @@ public abstract class Critter
 		return null;
 	}
 
-	public static void runStats(List<Critter> critters)
+	public static String runStats(List<Critter> critters)
 	{
 	}
 
@@ -247,12 +246,12 @@ public abstract class Critter
 				break;
 		}
 
-		xLook = xLook %Params.world_width;	// keeps critter on the board
-		yLook = yLook %Params.world_height;
+		xLook = xLook % Params.world_width;    // keeps critter on the board
+		yLook = yLook % Params.world_height;
 
 		String toRet = occupied(xLook, yLook);
 
-		energy-=Params.look_energy_cost;
+		energy -= Params.look_energy_cost;
 
 		//TODO IMPLEMENT MOVING FUNCTIONALITY
 
@@ -261,9 +260,9 @@ public abstract class Critter
 
 	private String occupied(int xLook, int yLook)
 	{
-		for(Critter c: population)
+		for (Critter c : population)
 		{
-			if(c.x_coord == xLook && c.y_coord == yLook)
+			if (c.x_coord == xLook && c.y_coord == yLook)
 			{
 				return c.toString();
 			}
@@ -372,6 +371,7 @@ public abstract class Critter
 			return;
 		}
 	}
+
 	public abstract void doTimeStep();
 
 	public abstract boolean fight(String oponent);
