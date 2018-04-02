@@ -1,33 +1,138 @@
 package assignment5;
-	
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import javax.swing.Painter;
+
+import assignment5.Critter.CritterShape;
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
+import javafx.geometry.VPos;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
+import javafx.scene.control.ScrollPane;
+
 public class Main extends Application {
-	static GridPane grid = new GridPane();
 
-	@Override
-	public void start(Stage primaryStage) {
-		try {			
+    class SuperCanvas extends Canvas
+    {
+        public SuperCanvas() {
+            widthProperty().addListener(evt -> redraw());
+            heightProperty().addListener(evt -> redraw());
+        }
 
-			grid.setGridLinesVisible(true);
+        public SuperCanvas(double width, double height) {
+            //setWidth(width);
+            //setHeight(height);
+            super(width, height);
+            widthProperty().addListener(evt -> redraw());
+            heightProperty().addListener(evt -> redraw());
+        }
 
-			Scene scene = new Scene(grid, 500, 500);
-			primaryStage.setScene(scene);
-			
-			primaryStage.show();
-			
-			// Paints the icons.
-			Painter.paint();
-			
-		} catch(Exception e) {
-			e.printStackTrace();		
-		}
-	}
-	
-	public static void main(String[] args) {
-		launch(args);
-	}
+        private void redraw() {
+            Main.screenHeight = getHeight();
+            Main.screenWidth = getWidth();
+            Critter.displayWorld();
+        }
+
+        public double prefWidth(double height) {
+            return getWidth();
+        }
+
+        public double prefHeight(double width) {
+            return getHeight();
+        }
+
+
+        public boolean isResizable() {
+            return true;
+        }
+
+    }
+
+    //main variables for drawing
+
+    static GridPane grid = new GridPane();
+
+    public static SuperCanvas mainCanvas = null; // primary world canvas
+    public static GraphicsContext mainGraphicsContext=null;
+    public static int mainRows = 10;
+    public static int mainCols = 10;
+    public static double mainLineWidth=10;
+
+    public static double screenHeight=Math.max(100, Math.min(Params.world_height*25, 1200));
+    public static double screenWidth=Math.max(100, Math.min(Params.world_width*25, 1200));
+
+    public static String thisPackage = Critter.class.getPackage().toString().split(" ")[1];
+
+    //main variables for animation
+
+    static GridPane animation;
+    static Button animationButton;
+    static Button stopAnimationButton;
+
+    //main timing variables
+
+    static Timer timer;
+    static TimerTask startAnimation;
+    
+
+
+
+    @Override
+    public void start(Stage primaryStage) {
+        try {
+
+            grid.setGridLinesVisible(true);
+
+            Scene scene = new Scene(grid, 500, 500);
+            primaryStage.setScene(scene);
+
+            primaryStage.show();
+
+            // Paints the icons.
+            Painter.paint();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
 }
