@@ -2,6 +2,7 @@ package assignment5;
 
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -55,21 +56,8 @@ public class Main extends Application
 		launch(args);
 	}
 
-	private static void makeController()
-	{
-		Stage controls = new Stage();
-		controls.setTitle("Controller");
-		GridPane controlsGridPane = new GridPane();
 
-		CrittersPane(controlsGridPane);
-		TimeStepPane(controlsGridPane);
-		QuitPane(controlsGridPane);
-
-		controls.setScene(new Scene(controlsGridPane));
-		controls.show();
-	}
-
-	private static void QuitPane(GridPane controlsGridPane)
+	protected static void QuitPane(GridPane controlsGridPane)
 	{
 		GridPane quitButtonGridPane = new GridPane();
 		quitButtonGridPane.setHgap(10);
@@ -82,7 +70,7 @@ public class Main extends Application
 		controlsGridPane.add(quitButtonGridPane, 0, 5);
 	}
 
-	private static void CrittersPane(GridPane mainPane)
+	protected static void CrittersPane(GridPane mainPane)
 	{
 		GridPane CrittersPane = new GridPane();
 		CrittersPane.setHgap(5);
@@ -125,7 +113,7 @@ public class Main extends Application
 
 	}
 
-	private static void TimeStepPane(GridPane mainPane)
+	protected static void TimeStepPane(GridPane mainPane)
 	{
 		GridPane timeStepGridPane = new GridPane();
 
@@ -166,8 +154,6 @@ public class Main extends Application
 		});
 
 		mainPane.add(textOfSlider, 0, 5);
-
-
 		mainPane.add(sliderPane, 0, 2);
 
 		timeStepButton = new Button();
@@ -254,8 +240,13 @@ public class Main extends Application
 				{
 					splash.hide();
 
+<<<<<<< HEAD
 					makeController();
 					View.makeView(primaryStage);
+=======
+					Controller.makeController();
+					makeView(primaryStage);
+>>>>>>> ea5a5b6ec36580d61bc009487afeeaff7cecf48d
 
 
 				}
