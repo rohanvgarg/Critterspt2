@@ -121,6 +121,7 @@ public class Main extends Application
     static ScrollPane scrollpane = new ScrollPane();
 
     static Button timeStepButton;
+
     static TextField numStepsTextField;
 
 
@@ -226,27 +227,52 @@ public class Main extends Application
 
         mainPane.add(CrittersPane,0,0);
 
+        //-------------------//
+
         GridPane timeStepGridPane = new GridPane();
 
         timeStepGridPane.setHgap(10);
         timeStepGridPane.setVgap(10);
-        timeStepGridPane.setPadding(new Insets(10, 2, 10, 2));
+        timeStepGridPane.setPadding(new Insets(150, 2, 10, 2));
 
         Label TimeStepLabel=new Label();
-        TimeStepLabel.setText("TIME STEPPER");
+        TimeStepLabel.setText("Time Step Menu");
         timeStepGridPane.add(TimeStepLabel, 0,0);
 
-        Label numTimeStepLabel=new Label();
-        numTimeStepLabel.setText("Number of Steps");
-        timeStepGridPane.add(numTimeStepLabel,0,1);
 
-        numStepsTextField=new TextField();
-        timeStepGridPane.add(numStepsTextField,1,1);
+        Slider slider = new Slider(0,100,50);
+        GridPane sliderPane = new GridPane();
+        //sliderPane.setHgap(10);
+        //sliderPane.setVgap(10);
+        //slider.setValue(50);
+        slider.setShowTickLabels(true);
+        slider.setShowTickMarks(true);
+        slider.setMajorTickUnit(50);
+        //slider.setMinorTickCount(5);
+        slider.setSnapToTicks(true);
+        //slider.setBlockIncrement(10);
+        sliderPane.add(slider,0,0);
+
+        final Label numStep = new Label(
+                Integer.toString((int)slider.getValue()));
+        GridPane textOfSlider = new GridPane();
+        textOfSlider.add(numStep,0,0);
+
+        mainPane.add(textOfSlider, 0, 5);
+
+
+
+        mainPane.add(sliderPane, 0,2);
 
         timeStepButton = new Button();
         timeStepButton.setText("Step");
-        timeStepButton.setOnAction(e->timeStepEventHandler(numStepsTextField.getText()));
-        timeStepGridPane.add(timeStepButton, 0, 2);
+        timeStepButton.setOnAction(e->timeStepEventHandler((int)slider.getValue()));
+        timeStepButton.setOnAction(e -> System.out.println(numStep));
+        timeStepGridPane.add(timeStepButton, 0, 4);
+
+
+        mainPane.add(timeStepGridPane,0,0);
+
 
     }
 
@@ -282,6 +308,16 @@ public class Main extends Application
         assignment5.Critter.displayWorld(grid);
 
     }
-}
+
+    private static void timeStepEventHandler(int numSteps){
+        int step = numSteps;
+        for(int i=0;i<step;i++){
+            Critter.worldTimeStep();
+        }
+        Critter.displayWorld(grid);
+
+        }
+    }
+
 
 
