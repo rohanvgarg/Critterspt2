@@ -69,7 +69,15 @@ public class Main extends Application
 	}
 
 
+<<<<<<< HEAD
 	public static String myPackage = assignment5.Critter.class.getPackage().toString().split(" ")[1];
+=======
+    static Button timeStepButton;
+
+    static TextField numStepsTextField;
+
+
+>>>>>>> 79cfecd8d3df77bb7128cd36308f261c83c82f7f
 
 	//main variables for drawing
 	static GridPane grid = new GridPane();
@@ -122,6 +130,7 @@ public class Main extends Application
 			grid.setGridLinesVisible(true);
 
 
+<<<<<<< HEAD
 			splash.setScene(scene);
 			splash.setScene(menuScene);
 			splash.show();
@@ -333,5 +342,101 @@ public class Main extends Application
 		gridGraphicsContext.fillPolygon(xCoords, yCoords, shapeCoordinates.length);
 	}
 }
+=======
+        mainPane.add(CrittersPane,0,0);
+
+        //-------------------//
+
+        GridPane timeStepGridPane = new GridPane();
+
+        timeStepGridPane.setHgap(10);
+        timeStepGridPane.setVgap(10);
+        timeStepGridPane.setPadding(new Insets(150, 2, 10, 2));
+
+        Label TimeStepLabel=new Label();
+        TimeStepLabel.setText("Time Step Menu");
+        timeStepGridPane.add(TimeStepLabel, 0,0);
+
+
+        Slider slider = new Slider(0,100,50);
+        GridPane sliderPane = new GridPane();
+        //sliderPane.setHgap(10);
+        //sliderPane.setVgap(10);
+        //slider.setValue(50);
+        slider.setShowTickLabels(true);
+        slider.setShowTickMarks(true);
+        slider.setMajorTickUnit(50);
+        //slider.setMinorTickCount(5);
+        slider.setSnapToTicks(true);
+        //slider.setBlockIncrement(10);
+        sliderPane.add(slider,0,0);
+
+        final Label numStep = new Label(
+                Integer.toString((int)slider.getValue()));
+        GridPane textOfSlider = new GridPane();
+        textOfSlider.add(numStep,0,0);
+
+        mainPane.add(textOfSlider, 0, 5);
+
+
+
+        mainPane.add(sliderPane, 0,2);
+
+        timeStepButton = new Button();
+        timeStepButton.setText("Step");
+        timeStepButton.setOnAction(e->timeStepEventHandler((int)slider.getValue()));
+        timeStepButton.setOnAction(e -> System.out.println(numStep));
+        timeStepGridPane.add(timeStepButton, 0, 4);
+
+
+        mainPane.add(timeStepGridPane,0,0);
+
+
+    }
+
+
+    private static void makeCritterHandler(String type, int quantity)
+    {
+        if (type == null)
+        {
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Critter not chosen");
+            alert.showAndWait();
+            return;
+        }
+
+        try
+        {
+            for (int i = 0; i < quantity; i++)
+            {
+                assignment5.Critter.makeCritter(type);
+
+            }
+        } catch (assignment5.InvalidCritterException ex)
+        {
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+
+            alert.setContentText("Invalid Critter Exception thrown");
+
+        }
+        assignment5.Critter.displayWorld(grid);
+
+    }
+
+    private static void timeStepEventHandler(int numSteps){
+        int step = numSteps;
+        for(int i=0;i<step;i++){
+            Critter.worldTimeStep();
+        }
+        Critter.displayWorld(grid);
+
+        }
+    }
+
+>>>>>>> 79cfecd8d3df77bb7128cd36308f261c83c82f7f
 
 
