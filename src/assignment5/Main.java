@@ -66,7 +66,7 @@ public class Main extends Application {
         private void redraw() {
             Main.screenHeight = getHeight();
             Main.screenWidth = getWidth();
-            Critter.displayWorld();
+            //Critter.displayWorld();
         }
 
         public double prefWidth(double height) {
@@ -109,7 +109,13 @@ public class Main extends Application {
 
     static Timer timer;
     static TimerTask startAnimation;
-    
+
+    //stats variable
+
+    public static ComboBox<String> statsType;
+    public static Label statsLabel;
+
+    static ScrollPane scrollpane = new ScrollPane();
 
 
 
@@ -117,15 +123,28 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         try {
 
-            grid.setGridLinesVisible(true);
+            //Stage menuStage = new Stage();
+            primaryStage.setTitle("menu");
+
+            BorderPane pane = new BorderPane();
+
+            Button startButton = new Button("Start!");
+            startButton.setMaxHeight(100);
+            startButton.setMaxWidth(100);
+            pane.setCenter(startButton);
 
             Scene scene = new Scene(grid, 500, 500);
             primaryStage.setScene(scene);
-
             primaryStage.show();
 
+            Scene menuScene = new Scene(pane, 1200, 720);
+            primaryStage.setScene(menuScene);
+
+            grid.setGridLinesVisible(true);
+
+
             // Paints the icons.
-            Painter.paint();
+            //Painter.paint();
 
         } catch (Exception e) {
             e.printStackTrace();
