@@ -1,6 +1,7 @@
 package assignment5;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -15,150 +16,40 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-<<<<<<< HEAD
-import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-=======
 import java.util.Timer;
 import java.util.TimerTask;
->>>>>>> 66c445793c923df89316d6ae0bfc0288fccd1443
+
 
 public class Main extends Application
 {
+	private final static double scale = 0.5;
 	public static SuperCanvas gridCanvas = null;//Main canvas which the world is displayed
 	public static GraphicsContext gridGraphicsContext = null;
-
-
-
-
-	private final static double scale = 0.5;
-
-	class SuperCanvas extends Canvas
-	{
-		public SuperCanvas()
-		{
-			widthProperty().addListener(evt -> redraw());
-			heightProperty().addListener(evt -> redraw());
-		}
-
-		public SuperCanvas(double width, double height)
-		{
-			super(width, height);
-			widthProperty().addListener(evt -> redraw());
-			heightProperty().addListener(evt -> redraw());
-		}
-
-		private void redraw()
-		{
-			Util.screenHeight = getHeight();
-			Util.screenWidth = getWidth();
-			//Critter.displayWorld();
-		}
-
-		public double prefWidth(double height)
-		{
-			return getWidth();
-		}
-
-		public double prefHeight(double width)
-		{
-			return getHeight();
-		}
-
-
-		public boolean isResizable()
-		{
-			return true;
-		}
-
-	}
-
-
-<<<<<<< HEAD
 	public static String myPackage = assignment5.Critter.class.getPackage().toString().split(" ")[1];
-=======
-    static Button timeStepButton;
-
-    static TextField numStepsTextField;
-
-
->>>>>>> 79cfecd8d3df77bb7128cd36308f261c83c82f7f
-
-	//main variables for drawing
-	static GridPane grid = new GridPane();
-
 	public static SuperCanvas mainCanvas = null; // primary world canvas
 	public static GraphicsContext mainGraphicsContext = null;
 	public static int mainRows = 10;
 	public static int mainCols = 10;
 	public static double mainLineWidth = 10;
-
-
 	public static String thisPackage = Critter.class.getPackage().toString().split(" ")[1];
-
-	//main variables for animation
-
-	static GridPane animation;
-	static Button animationButton;
-	static Button stopAnimationButton;
-
-	//main timing variables
-
-	static Timer timer;
-	static TimerTask startAnimation;
-
-	//stats variable
-
 	public static ComboBox<String> statsType;
 	public static Label statsLabel;
+	static Button timeStepButton;
+	static TextField numStepsTextField;
 
+	//main variables for animation
+	//main variables for drawing
+	static GridPane grid = new GridPane();
+	static GridPane animation;
+	static Button animationButton;
+
+	//main timing variables
+	static Button stopAnimationButton;
+	static Timer timer;
+
+	//stats variable
+	static TimerTask startAnimation;
 	static ScrollPane scrollpane = new ScrollPane();
-
-
-	@Override
-	public void start(Stage primaryStage)
-	{
-		try
-		{
-			Stage splash = new Stage();
-			splash.setTitle("Splash");
-			BorderPane pane = new BorderPane();
-			Button startButton = new Button("Start!");
-			startButton.setMaxHeight(100);
-			startButton.setMaxWidth(100);
-			pane.setCenter(startButton);
-			Scene scene = new Scene(grid, 500, 500);
-
-
-			Scene menuScene = new Scene(pane, 1200, 720);
-
-			grid.setGridLinesVisible(true);
-
-
-<<<<<<< HEAD
-			splash.setScene(scene);
-			splash.setScene(menuScene);
-			splash.show();
-
-			//launch game button
-			startButton.setOnAction(new EventHandler<ActionEvent>()
-			{
-				public void handle(ActionEvent event)
-				{
-					splash.hide();
-
-					makeController();
-					makeView(primaryStage);
-
-
-				}
-			});
-		} catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
 
 	public static void main(String[] args)
 	{
@@ -172,11 +63,13 @@ public class Main extends Application
 		GridPane controlsGridPane = new GridPane();
 
 		CrittersPane(controlsGridPane);
+		TimeStepPane(controlsGridPane);
 		QuitPane(controlsGridPane);
 
 		controls.setScene(new Scene(controlsGridPane));
 		controls.show();
 	}
+
 	private static void QuitPane(GridPane controlsGridPane)
 	{
 		GridPane quitButtonGridPane = new GridPane();
@@ -189,6 +82,7 @@ public class Main extends Application
 		quitButtonGridPane.add(quitButton, 0, 0);
 		controlsGridPane.add(quitButtonGridPane, 0, 5);
 	}
+
 	private static void CrittersPane(GridPane mainPane)
 	{
 		GridPane CrittersPane = new GridPane();
@@ -232,34 +126,61 @@ public class Main extends Application
 
 	}
 
-
-	private void makeView(Stage primaryStage)
-	{
-		primaryStage.show();
-		primaryStage.setTitle("Display");
-		Group root = new Group();
-		gridCanvas = new SuperCanvas(Util.screenWidth, Util.screenHeight);
-		gridGraphicsContext = gridCanvas.getGraphicsContext2D();
-
-		grid.getChildren().add(gridCanvas);
-		gridCanvas.widthProperty().bind(grid.widthProperty());
-		gridCanvas.heightProperty().bind(grid.heightProperty());
-		primaryStage.setScene(new Scene(grid));
-
-		makeGrid(null);
-		grid.setGridLinesVisible(true);
-
-		primaryStage.show();
-	}
-
-
-
-	private static void makeCritterHandler(String type, int quantity)
+	private static void TimeStepPane(GridPane mainPane)
 	{
 
-		//todo
-	}
+		GridPane timeStepGridPane = new GridPane();
 
+		timeStepGridPane.setHgap(10);
+		timeStepGridPane.setVgap(10);
+		timeStepGridPane.setPadding(new Insets(150, 2, 10, 2));
+
+		Label TimeStepLabel = new Label();
+		TimeStepLabel.setText("Time Step Menu");
+		timeStepGridPane.add(TimeStepLabel, 0, 0);
+
+
+		Slider slider = new Slider(0, 100, 50);
+		GridPane sliderPane = new GridPane();
+		//sliderPane.setHgap(10);
+		//sliderPane.setVgap(10);
+		//slider.setValue(50);
+		slider.setShowTickLabels(true);
+		slider.setShowTickMarks(true);
+		slider.setMajorTickUnit(50);
+		//slider.setMinorTickCount(5);
+		slider.setSnapToTicks(true);
+		//slider.setBlockIncrement(10);
+		sliderPane.add(slider, 0, 0);
+
+		final Label numStep = new Label(
+				Integer.toString((int) slider.getValue()));
+		GridPane textOfSlider = new GridPane();
+		textOfSlider.add(numStep, 0, 0);
+
+		slider.valueProperty().addListener(new ChangeListener<Number>()
+		{
+			public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val)
+			{
+				slider.setValue((int) new_val);
+				numStep.setText(String.format("%.2f", new_val));
+			}
+		});
+
+		mainPane.add(textOfSlider, 0, 5);
+
+
+		mainPane.add(sliderPane, 0, 2);
+
+		timeStepButton = new Button();
+		timeStepButton.setText("Step");
+		timeStepButton.setOnAction(e -> timeStepEventHandler((int) slider.getValue()));
+		timeStepButton.setOnAction(e -> System.out.println(numStep));
+		timeStepGridPane.add(timeStepButton, 0, 4);
+
+
+		mainPane.add(timeStepGridPane, 0, 1);
+	}
 
 	public static void makeGrid(Critter[][] world)
 	{
@@ -347,109 +268,149 @@ public class Main extends Application
 		gridGraphicsContext.strokePolygon(xCoords, yCoords, shapeCoordinates.length);
 		gridGraphicsContext.fillPolygon(xCoords, yCoords, shapeCoordinates.length);
 	}
+
+	private static void makeCritterHandler(String type, int quantity)
+	{
+		if (type == null)
+		{
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Error");
+			alert.setHeaderText(null);
+			alert.setContentText("Critter not chosen");
+			alert.showAndWait();
+			return;
+		}
+
+		try
+		{
+			for (int i = 0; i < quantity; i++)
+			{
+				assignment5.Critter.makeCritter(type);
+
+			}
+		} catch (assignment5.InvalidCritterException ex)
+		{
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Error");
+			alert.setHeaderText(null);
+
+			alert.setContentText("Invalid Critter Exception thrown");
+
+		}
+		assignment5.Critter.displayWorld(grid);
+
+	}
+
+	private static void timeStepEventHandler(int numSteps)
+	{
+		int step = numSteps;
+		for (int i = 0; i < step; i++)
+		{
+			Critter.worldTimeStep();
+		}
+		Critter.displayWorld(grid);
+
+	}
+
+	@Override
+	public void start(Stage primaryStage)
+	{
+		try
+		{
+			Stage splash = new Stage();
+			splash.setTitle("Splash");
+			BorderPane pane = new BorderPane();
+			Button startButton = new Button("Start!");
+			startButton.setMaxHeight(100);
+			startButton.setMaxWidth(100);
+			pane.setCenter(startButton);
+			Scene scene = new Scene(grid, 500, 500);
+
+
+			Scene menuScene = new Scene(pane, 1200, 720);
+
+			grid.setGridLinesVisible(true);
+
+
+			splash.setScene(scene);
+			splash.setScene(menuScene);
+			splash.show();
+
+			//launch game button
+			startButton.setOnAction(new EventHandler<ActionEvent>()
+			{
+				public void handle(ActionEvent event)
+				{
+					splash.hide();
+
+					makeController();
+					makeView(primaryStage);
+
+
+				}
+			});
+		} catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+	}
+
+	private void makeView(Stage primaryStage)
+	{
+		primaryStage.show();
+		primaryStage.setTitle("Display");
+		Group root = new Group();
+		gridCanvas = new SuperCanvas(Util.screenWidth, Util.screenHeight);
+		gridGraphicsContext = gridCanvas.getGraphicsContext2D();
+
+		grid.getChildren().add(gridCanvas);
+		gridCanvas.widthProperty().bind(grid.widthProperty());
+		gridCanvas.heightProperty().bind(grid.heightProperty());
+		primaryStage.setScene(new Scene(grid));
+
+		makeGrid(null);
+		grid.setGridLinesVisible(true);
+
+		primaryStage.show();
+	}
+
+	class SuperCanvas extends Canvas
+	{
+		public SuperCanvas()
+		{
+			widthProperty().addListener(evt -> redraw());
+			heightProperty().addListener(evt -> redraw());
+		}
+
+		public SuperCanvas(double width, double height)
+		{
+			super(width, height);
+			widthProperty().addListener(evt -> redraw());
+			heightProperty().addListener(evt -> redraw());
+		}
+
+		private void redraw()
+		{
+			Util.screenHeight = getHeight();
+			Util.screenWidth = getWidth();
+			//Critter.displayWorld();
+		}
+
+		public double prefWidth(double height)
+		{
+			return getWidth();
+		}
+
+		public double prefHeight(double width)
+		{
+			return getHeight();
+		}
+
+
+		public boolean isResizable()
+		{
+			return true;
+		}
+
+	}
 }
-=======
-        mainPane.add(CrittersPane,0,0);
-
-        //-------------------//
-
-        GridPane timeStepGridPane = new GridPane();
-
-        timeStepGridPane.setHgap(10);
-        timeStepGridPane.setVgap(10);
-        timeStepGridPane.setPadding(new Insets(150, 2, 10, 2));
-
-        Label TimeStepLabel=new Label();
-        TimeStepLabel.setText("Time Step Menu");
-        timeStepGridPane.add(TimeStepLabel, 0,0);
-
-
-        Slider slider = new Slider(0,100,50);
-        GridPane sliderPane = new GridPane();
-        //sliderPane.setHgap(10);
-        //sliderPane.setVgap(10);
-        //slider.setValue(50);
-        slider.setShowTickLabels(true);
-        slider.setShowTickMarks(true);
-        slider.setMajorTickUnit(50);
-        //slider.setMinorTickCount(5);
-        slider.setSnapToTicks(true);
-        //slider.setBlockIncrement(10);
-        sliderPane.add(slider,0,0);
-
-        final Label numStep = new Label(
-                Integer.toString((int)slider.getValue()));
-        GridPane textOfSlider = new GridPane();
-        textOfSlider.add(numStep,0,0);
-
-        slider.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val) {
-                slider.setValue((int)new_val);
-                numStep.setText(String.format("%.2f", new_val));
-                }
-    });
-
-        mainPane.add(textOfSlider, 0, 5);
-
-
-
-        mainPane.add(sliderPane, 0,2);
-
-        timeStepButton = new Button();
-        timeStepButton.setText("Step");
-        timeStepButton.setOnAction(e->timeStepEventHandler((int)slider.getValue()));
-        timeStepButton.setOnAction(e -> System.out.println(numStep));
-        timeStepGridPane.add(timeStepButton, 0, 4);
-
-
-        mainPane.add(timeStepGridPane,0,0);
-
-
-    }
-
-
-    private static void makeCritterHandler(String type, int quantity)
-    {
-        if (type == null)
-        {
-            Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText("Critter not chosen");
-            alert.showAndWait();
-            return;
-        }
-
-        try
-        {
-            for (int i = 0; i < quantity; i++)
-            {
-                assignment5.Critter.makeCritter(type);
-
-            }
-        } catch (assignment5.InvalidCritterException ex)
-        {
-            Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-
-            alert.setContentText("Invalid Critter Exception thrown");
-
-        }
-        assignment5.Critter.displayWorld(grid);
-
-    }
-
-    private static void timeStepEventHandler(int numSteps){
-        int step = numSteps;
-        for(int i=0;i<step;i++){
-            Critter.worldTimeStep();
-        }
-        Critter.displayWorld(grid);
-
-        }
-    }
-
->>>>>>> 79cfecd8d3df77bb7128cd36308f261c83c82f7f
-
-
