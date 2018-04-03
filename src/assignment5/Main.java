@@ -120,6 +120,10 @@ public class Main extends Application
 
     static ScrollPane scrollpane = new ScrollPane();
 
+    static Button timeStepButton;
+    static TextField numStepsTextField;
+
+
 
     @Override
     public void start(Stage primaryStage)
@@ -219,6 +223,28 @@ public class Main extends Application
         CrittersPane.add(makeButton10, 2, 3);
 
         mainPane.add(CrittersPane,0,0);
+
+        GridPane timeStepGridPane = new GridPane();
+
+        timeStepGridPane.setHgap(10);
+        timeStepGridPane.setVgap(10);
+        timeStepGridPane.setPadding(new Insets(10, 2, 10, 2));
+
+        Label TimeStepLabel=new Label();
+        TimeStepLabel.setText("TIME STEPPER");
+        timeStepGridPane.add(TimeStepLabel, 0,0);
+
+        Label numTimeStepLabel=new Label();
+        numTimeStepLabel.setText("Number of Steps");
+        timeStepGridPane.add(numTimeStepLabel,0,1);
+
+        numStepsTextField=new TextField();
+        timeStepGridPane.add(numStepsTextField,1,1);
+
+        timeStepButton = new Button();
+        timeStepButton.setText("Step");
+        timeStepButton.setOnAction(e->timeStepEventHandler(numStepsTextField.getText()));
+        timeStepGridPane.add(timeStepButton, 0, 2);
 
     }
 
