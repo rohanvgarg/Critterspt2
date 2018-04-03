@@ -41,6 +41,10 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+
 public class Main extends Application
 {
     class SuperCanvas extends Canvas
@@ -257,6 +261,13 @@ public class Main extends Application
                 Integer.toString((int)slider.getValue()));
         GridPane textOfSlider = new GridPane();
         textOfSlider.add(numStep,0,0);
+
+        slider.valueProperty().addListener(new ChangeListener<Number>() {
+            public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val) {
+                slider.setValue((int)new_val);
+                numStep.setText(String.format("%.2f", new_val));
+                }
+    });
 
         mainPane.add(textOfSlider, 0, 5);
 
