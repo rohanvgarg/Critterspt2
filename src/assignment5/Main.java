@@ -46,16 +46,19 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.control.ScrollPane;
 
-public class Main extends Application {
+public class Main extends Application
+{
 
     class SuperCanvas extends Canvas
     {
-        public SuperCanvas() {
+        public SuperCanvas()
+        {
             widthProperty().addListener(evt -> redraw());
             heightProperty().addListener(evt -> redraw());
         }
 
-        public SuperCanvas(double width, double height) {
+        public SuperCanvas(double width, double height)
+        {
             //setWidth(width);
             //setHeight(height);
             super(width, height);
@@ -63,22 +66,26 @@ public class Main extends Application {
             heightProperty().addListener(evt -> redraw());
         }
 
-        private void redraw() {
+        private void redraw()
+        {
             Main.screenHeight = getHeight();
             Main.screenWidth = getWidth();
             //Critter.displayWorld();
         }
 
-        public double prefWidth(double height) {
+        public double prefWidth(double height)
+        {
             return getWidth();
         }
 
-        public double prefHeight(double width) {
+        public double prefHeight(double width)
+        {
             return getHeight();
         }
 
 
-        public boolean isResizable() {
+        public boolean isResizable()
+        {
             return true;
         }
 
@@ -89,13 +96,13 @@ public class Main extends Application {
     static GridPane grid = new GridPane();
 
     public static SuperCanvas mainCanvas = null; // primary world canvas
-    public static GraphicsContext mainGraphicsContext=null;
+    public static GraphicsContext mainGraphicsContext = null;
     public static int mainRows = 10;
     public static int mainCols = 10;
-    public static double mainLineWidth=10;
+    public static double mainLineWidth = 10;
 
-    public static double screenHeight=Math.max(100, Math.min(Params.world_height*25, 1200));
-    public static double screenWidth=Math.max(100, Math.min(Params.world_width*25, 1200));
+    public static double screenHeight = Math.max(100, Math.min(Params.world_height * 25, 1200));
+    public static double screenWidth = Math.max(100, Math.min(Params.world_width * 25, 1200));
 
     public static String thisPackage = Critter.class.getPackage().toString().split(" ")[1];
 
@@ -118,11 +125,11 @@ public class Main extends Application {
     static ScrollPane scrollpane = new ScrollPane();
 
 
-
     @Override
-    public void start(Stage primaryStage) {
-        try {
-
+    public void start(Stage primaryStage)
+    {
+        try
+        {
             //Stage menuStage = new Stage();
             primaryStage.setTitle("menu");
 
@@ -142,16 +149,17 @@ public class Main extends Application {
 
             grid.setGridLinesVisible(true);
 
-
             // Paints the icons.
             //Painter.paint();
 
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         launch(args);
     }
 }
