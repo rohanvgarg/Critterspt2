@@ -3,17 +3,13 @@ package assignment5;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.util.Timer;
@@ -144,13 +140,10 @@ public class Main extends Application
 		GridPane textOfSlider = new GridPane();
 		textOfSlider.add(numStep, 0, 0);
 
-		slider.valueProperty().addListener(new ChangeListener<Number>()
+		slider.valueProperty().addListener((ov, old_val, new_val) ->
 		{
-			public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val)
-			{
-				slider.setValue((int) new_val);
-				numStep.setText(String.format("%.2f", new_val));
-			}
+			slider.setValue((int) new_val);
+			numStep.setText(String.format("%.2f", new_val));
 		});
 
 		mainPane.add(textOfSlider, 0, 5);
@@ -234,22 +227,13 @@ public class Main extends Application
 			splash.show();
 
 			//launch game button
-			startButton.setOnAction(new EventHandler<ActionEvent>()
+			startButton.setOnAction(event ->
 			{
-				public void handle(ActionEvent event)
-				{
-					splash.hide();
+				splash.hide();
 
-<<<<<<< HEAD
-					makeController();
-					View.makeView(primaryStage);
-=======
-					Controller.makeController();
-					makeView(primaryStage);
->>>>>>> ea5a5b6ec36580d61bc009487afeeaff7cecf48d
+				View.makeView(primaryStage);
 
-
-				}
+				Controller.makeController();
 			});
 		} catch (Exception e)
 		{
