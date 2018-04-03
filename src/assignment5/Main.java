@@ -144,6 +144,11 @@ public class Main extends Application
 
             grid.setGridLinesVisible(true);
 
+
+			splash.setScene(scene);
+			splash.setScene(menuScene);
+			splash.show();
+
             //launch game button
             startButton.setOnAction(new EventHandler<ActionEvent>()
             {
@@ -163,9 +168,6 @@ public class Main extends Application
             });
 
 
-            primaryStage.setScene(scene);
-            primaryStage.setScene(menuScene);
-            primaryStage.show();
 
 
             // Paints the icons.
@@ -198,7 +200,7 @@ public class Main extends Application
         cType.setText("Type");
 
         ComboBox<String> critterSelectComboBox = new ComboBox<String>();
-        critterSelectComboBox.getItems().addAll(getAllCritterClasses());
+        critterSelectComboBox.getItems().addAll(Util.getAllCritterClasses());
 
         Label critterQuantity = new Label();
         critterQuantity.setText("Quantity");
@@ -249,34 +251,6 @@ public class Main extends Application
     }
 
 
-    private static List<String> getAllCritterClasses()
-    {
-        File f = new File(".");
-
-        List<File> cTypes = new ArrayList<File>();
-
-        getAllClassFiles(cTypes, ".");
-
-        ArrayList<String> cNames = new ArrayList<String>();
-        for (int i = 0; i < cTypes.size(); i++)
-        {
-            try
-            {
-                String className = cTypes.get(i).getName().replace(".class", "");
-                Class<?> testingClass = Class.forName(myPackage + "." + className);
-                if (testingClass.newInstance() instanceof assignment5.Critter)
-                {
-                    cNames.add(className);
-                }
-            } catch (Exception e)
-            {
-                //TODO
-                e.printStackTrace();
-            }
-        }
-        return cNames;
-    }
-
     private static void makeCritterHandler(String type, int quantity)
     {
         if (type == null)
@@ -308,28 +282,6 @@ public class Main extends Application
         assignment5.Critter.displayWorld(grid);
 
     }
-
-
-
-    //called recursively to get all .class files
-    private static void getAllClassFiles(List<File> f, String path)
-    {
-        File critter = new File(path);
-        //get all the files from a directory
-        File[] filesList = critter.listFiles();
-        for (File file : filesList)
-        {
-            if (file.isDirectory())
-            {
-                getAllClassFiles(f, file.getAbsolutePath());
-            }
-            if (file.isFile() && file.getName().endsWith(".class"))
-            {
-                f.add(file);
-            }
-        }
-    }
-
 }
 
 
