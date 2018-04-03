@@ -96,6 +96,7 @@ public class Critter4 extends Critter
 	 */
 	public static String runStats(java.util.List<Critter> theseCritters)
 	{
+		String toRet = "";
 		int totalNumofCrits = 0;
 		int numOfCritsattractedto1 = 0;
 		int numOfCritsattractedto2 = 0;
@@ -130,22 +131,23 @@ public class Critter4 extends Critter
 
 		}
 
-		System.out.println("Critter4");
-		System.out.println("--------");
+		toRet +=("Critter4\n");
+		toRet +=("--------\n");
 		if(totalNumofCrits > 0)
         {
-            System.out.println("total number of Critter4's:		" + totalNumofCrits);
-            System.out.println("total number of Critter4's attracted to Critter1:		" + numOfCritsattractedto1);
-            System.out.println("total number of Critter4's attracted to Critter2:		" + numOfCritsattractedto2);
-            System.out.println("total number of Critter4's attracted to Critter3:		" + numOfCritsattractedto3);
-            System.out.println("total number of Critter4's attracted to Critter4:		" + numOfCritsattractedto4);
+            toRet +=("total number of Critter4's:		" + totalNumofCrits + "\n");
+            toRet +=("total number of Critter4's attracted to Critter1:		" + numOfCritsattractedto1 + "\n");
+            toRet +=("total number of Critter4's attracted to Critter2:		" + numOfCritsattractedto2 + "\n");
+            toRet +=("total number of Critter4's attracted to Critter3:		" + numOfCritsattractedto3 + "\n");
+            toRet +=("total number of Critter4's attracted to Critter4:		" + numOfCritsattractedto4 + "\n");
 
         }
         else
         {
-            System.out.println("ALL DEAD");
+            toRet +=("ALL DEAD\n");
         }
 
+        return toRet;
 	}
 
 	@Override
