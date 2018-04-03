@@ -161,6 +161,8 @@ public abstract class Critter
 
 	public static String runStats(List<Critter> critters)
 	{
+		return "";
+		//TODO
 	}
 
 	/**
@@ -253,7 +255,13 @@ public abstract class Critter
 
 		energy -= Params.look_energy_cost;
 
-		//TODO IMPLEMENT MOVING FUNCTIONALITY
+		if (numsteps == 1)
+		{
+			walk(direction);
+		} else if (numsteps == 2)
+		{
+			run(direction);
+		}
 
 		return toRet;
 	}
