@@ -11,6 +11,8 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javafx.scene.paint.Color;
+
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -122,8 +124,34 @@ public class Main extends Application
 		timeStepGridPane.add(TimeStepLabel, 0, 0);
 
 
-		Slider slider = new Slider(0, 100, 50);
-		GridPane sliderPane = new GridPane();
+		final Slider slider = new Slider(0, 100, 50);
+        final Label sliderValue = new Label("Number of Time Steps:");
+        final Color textColor = Color.BLACK;
+
+        slider.setValue(50);
+        slider.setShowTickLabels(true);
+        slider.setShowTickMarks(true);
+        slider.setMajorTickUnit(50);
+        slider.setSnapToTicks(true);
+
+
+        slider.valueProperty().addListener(new ChangeListener<Number>() {
+            public void changed(ObservableValue<? extends Number> ov,
+                                Number old_val, Number new_val) {
+                sliderValue.setText(String.format("%.2f", new_val));
+            }
+        });
+
+        GridPane.setConstraints(slider, 1, 1);
+        mainPane.getChildren().add(slider);
+
+        sliderValue.setTextFill(textColor);
+        GridPane.setConstraints(sliderValue, 0, 1);
+        mainPane.getChildren().add(sliderValue);
+
+
+        /*
+        GridPane sliderPane = new GridPane();
 		//sliderPane.setHgap(10);
 		//sliderPane.setVgap(10);
 		//slider.setValue(50);
@@ -135,24 +163,33 @@ public class Main extends Application
 		//slider.setBlockIncrement(10);
 		sliderPane.add(slider, 0, 0);
 
-		final Label numStep = new Label(
-				Integer.toString((int) slider.getValue()));
+		final int numStep = (int) slider.getValue();
+		GridPane numStepPane = new GridPane();
+		numStepPane.add(numStep, 0,0);
+
 		GridPane textOfSlider = new GridPane();
 		textOfSlider.add(numStep, 0, 0);
 
 		slider.valueProperty().addListener((ov, old_val, new_val) ->
 		{
-			slider.setValue((int) new_val);
-			numStep.setText(String.format("%.2f", new_val));
+		    //int new_valright = (int) new_val;
+			//slider.setValue(new_valright);
+			numStep = (int)new_val;
 		});
+
+        //numStep.setTextFill(Color.BLACK);
+        GridPane.setConstraints(numStep, 2, 1);
+        grid.getChildren().add(numStep);
 
 		mainPane.add(textOfSlider, 0, 5);
 		mainPane.add(sliderPane, 0, 2);
+		*/
 
 		timeStepButton = new Button();
 		timeStepButton.setText("Step");
-		timeStepButton.setOnAction(e -> timeStepEventHandler((int) slider.getValue()));
-		timeStepButton.setOnAction(e -> System.out.println(numStep));
+		timeStepButton.setOnAction(e -> timeStepEventHandler((int)slider.getValue()));
+		//System.out.println((int)slider.getValue());
+		//timeStepButton.setOnAction(e -> System.out.println((int)slider.getValue()));
 		timeStepGridPane.add(timeStepButton, 0, 4);
 
 
@@ -230,10 +267,9 @@ public class Main extends Application
 			startButton.setOnAction(event ->
 			{
 				splash.hide();
+                Controller.makeController();
+                View.makeView(primaryStage);
 
-				View.makeView(primaryStage);
-
-				Controller.makeController();
 			});
 		} catch (Exception e)
 		{
