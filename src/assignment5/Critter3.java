@@ -108,6 +108,7 @@ public class Critter3 extends Critter
 
     public static String runStats(java.util.List<Critter> theseCritters)
     {
+        String toRet = "";
         int totalNumofCrits = 0;
         int numofPreds = 0;
         int numofPrey = 0;
@@ -124,20 +125,20 @@ public class Critter3 extends Critter
                 numofPrey++;
         }
 
-        System.out.println("Critter3");
-        System.out.println("--------");
+        toRet += ("Critter3\n");
+		toRet +=("--------\n");
         if (totalNumofCrits > 0)
         {
-            System.out.println("total number of Critter3's:		" + totalNumofCrits);
-            System.out.println("total number of Predators:		" + numofPreds);
-            System.out.println("total number of Prey:		" + numofPrey);
-            System.out.println("ratio of predators to prey:	" + (((double) numofPreds / (double) numofPrey)) * 100.0);
+			toRet +=("total number of Critter3's:		" + totalNumofCrits + "\n");
+			toRet +=("total number of Predators:		" + numofPreds + "\n");
+			toRet +=("total number of Prey:		" + numofPrey + "\n");
+			toRet +=("ratio of predators to prey:	" + (((double) numofPreds / (double) numofPrey)) * 100.0 + "\n");
         } else
         {
-            System.out.println("ALL DEAD :(");
+			toRet +=("ALL DEAD :( \n");
         }
 
-
+        return toRet;
     }
 
     @Override

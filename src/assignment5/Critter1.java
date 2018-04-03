@@ -79,6 +79,7 @@ public class Critter1 extends Critter
      */
     public static String runStats(java.util.List<Critter> theseCritters)
     {
+		String toRet = "";
         int highAge = 0;
         int totalAge = 0;
 
@@ -91,6 +92,7 @@ public class Critter1 extends Critter
 
         for (Critter c : theseCritters)
         {
+
             n += 1;
             Critter1 c1 = (Critter1) (c);
 
@@ -113,21 +115,22 @@ public class Critter1 extends Critter
             totalEnergy += c1.getEnergy();
         }
 
-        System.out.println("Critter1");
-        System.out.println("--------");
+        toRet += ("Critter1\n");
+        toRet += ("--------\n");
         if(n > 0)
         {
-            System.out.println("oldest:		" + highAge);
-            System.out.println("avg age:	" + (double) (totalAge / n));
-            System.out.println("best parent:" + mostKids + " kids");
-            System.out.println("avg kids:	" + ((double) totalKids / (double) n) + " kids");
-            System.out.println("high energy: " + highEnergy);
-            System.out.println("avg energy: " + ((double) totalEnergy / (double) n));
+            toRet += ("oldest:		" + highAge + "\n");
+            toRet += ("avg age:	" + (double) (totalAge / n) + "\n");
+            toRet += ("best parent:" + mostKids + " kids" + "\n");
+            toRet += ("avg kids:	" + ((double) totalKids / (double) n) + " kids" + "\n");
+            toRet += ("high energy: " + highEnergy + "\n");
+            toRet += ("avg energy: " + ((double) totalEnergy / (double) n) + "\n");
         }
         else
         {
-            System.out.println("ALL DEAD :(");
+            toRet += ("ALL DEAD :(" + "\n");
         }
+        return toRet;
     }
 
     @Override
