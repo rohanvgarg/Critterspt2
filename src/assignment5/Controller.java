@@ -9,10 +9,14 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import java.util.*;
 
 import javafx.scene.control.Alert.AlertType;
 public class Controller
 {
+    public static String myPackage = Critter.class.getPackage().toString().split(" ")[1];
+    static  Label statisticsLabel;
+
 
     protected static void makeController()
     {
@@ -93,7 +97,7 @@ public class Controller
     statsGridPane.setVgap(5);
     statsGridPane.setPadding(new Insets(10, 2, 10, 2));
 
-    Label statisticsLabel=new Label();
+    statisticsLabel=new Label();
     statisticsLabel.setText("Run Statisitcs");
     statsGridPane.add(statisticsLabel, 0,0);
 
@@ -104,7 +108,7 @@ public class Controller
     Button crit1Button ;
     crit1Button = new Button("Run Stats - Critter 1");
     statsGridPane.add(crit1Button, 2, 1);
-    //crit1Button.setOnAction(e->runStatsEventHandler("Critter1"));
+    crit1Button.setOnAction(e->runStatsEventHandler("Critter1"));
 
 
     Button crit2Button ;
@@ -140,6 +144,43 @@ public class Controller
 
     mainPane.add(statsGridPane,0,2);
 }
+
+    private static void runStatsEventHandler(String text){
+
+        String displayString;
+        List<Critter> critterList;
+
+        try{
+            critterList=Critter.getInstances(text);
+
+            try{
+                Class<?> inClass=Class.forName(myPackage+"."+ text);
+                java.lang.reflect.Method inMethod=inClass.getMethod("runStats",List.class);
+
+                displayString=(String)inMethod.invoke(null,critterList);
+                statisticsLabel.setText(displayString);
+
+
+            }catch(Exception ex){
+
+                throw new InvalidCritterException(text);
+
+            }
+
+        }catch(InvalidCritterException ex){
+
+
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Invalid Critter Exception");
+            alert.showAndWait();
+            return;
+
+        }
+
+    }
+
 
 
 

@@ -130,6 +130,7 @@ public class Critter1 extends Critter
         {
             toRet += ("ALL DEAD :(" + "\n");
         }
+        System.out.println(toRet); //TODO remove this prolly
         return toRet;
     }
 
