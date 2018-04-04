@@ -16,6 +16,12 @@ public class View
     public static final Paint worldBoxLineColor = javafx.scene.paint.Color.BLACK;
 
 
+    //SHAPE constants
+    private final static double[][] triangle = {{0.50, 0.06}, {0.06, 0.78}, {0.94, 0.78}};
+    private final static double[][] square = {{0.12, 0.12}, {0.12, 0.88}, {0.88, 0.88}, {0.88, 0.12}};
+    private final static double[][] diamond = {{0.50, 0.06}, {0.25, 0.50}, {0.50, 0.94}, {0.75, 0.50}};
+    private final static double[][] star = {{0.20, 0.95}, {0.50, 0.75}, {0.80, 0.95}, {0.68, 0.60}, {0.95, 0.40}, {0.62, 0.38}, {0.50, 0.05}, {0.38, 0.38}, {0.05, 0.40}, {0.32, 0.64}};
+
     protected static void displayWorld(Canvas pane)
     {
         //size of each grid box
@@ -87,111 +93,47 @@ public class View
                 gc.strokeOval(critterX, critterY, critterWidth, critterHeight);
 
                 break;
-            case STAR:
-                //draw fill
-                double x1 = canvWidth * 0.2 + xOffset;
-                double y1 = canvHeight * 0.47 + yOffset;
 
-                double x2 = canvWidth * 0.4 + xOffset;
-                double y2 = canvHeight * 0.42 + yOffset;
-
-                double x3 = canvWidth * 0.5 + xOffset;
-                double y3 = canvHeight * 0.2 + yOffset;
-
-                double x4 = canvWidth * 0.6 + xOffset;
-                double y4 = canvHeight * 0.42 + yOffset;
-
-                double x5 = canvWidth * 0.8 + xOffset;
-                double y5 = canvHeight * 0.47 + yOffset;
-
-                double x6 = canvWidth * 0.65 + xOffset;
-                double y6 = canvHeight * 0.6 + yOffset;
-
-                double x7 = canvWidth * 0.7 + xOffset;
-                double y7 = canvHeight * 0.85 + yOffset;
-
-                double x8 = canvWidth * 0.5 + xOffset;
-                double y8 = canvHeight * 0.7 + yOffset;
-
-                double x9 = canvWidth * 0.3 + xOffset;
-                double y9 = canvHeight * 0.85 + yOffset;
-
-                double x10 = canvWidth * 0.35 + xOffset;
-                double y10 = canvHeight * 0.6 + yOffset;
-
-                double xCoord[] = {x1, x2, x3, x4, x5, x6, x7, x8, x9, x10};
-                double yCoord[] = {y1, y2, y3, y4, y5, y6, y7, y8, y9, y10};
-
-                gc.setFill(toBePainted.viewFillColor());
-                gc.fillPolygon(xCoord, yCoord, 10);
-//
-                gc.setStroke(toBePainted.viewOutlineColor());
-                gc.setLineWidth(1.5);
-                gc.strokePolygon(xCoord, yCoord, 10);
-
-                break;
             case SQUARE:
                 //draw fill
                 gc.setFill(toBePainted.viewFillColor());
-                gc.fillOval(critterX, critterY, critterWidth, critterHeight);
+                gc.fillRoundRect(critterX, critterY, critterWidth, critterHeight, critterWidth/4.0,critterHeight/4.0);
 
                 //draw outline
                 gc.setStroke(toBePainted.viewOutlineColor());
-                gc.strokeOval(critterX, critterY, critterWidth, critterHeight);
+                gc.strokeRoundRect(critterX, critterY, critterWidth, critterHeight, critterWidth/4.0,critterHeight/4.0);
 
+                break;
+            case STAR:
+                drawPolygon(gc, toBePainted, star, canvWidth, xOffset, canvHeight, yOffset);
                 break;
             case DIAMOND:
-                //draw fill
-                x1 = 0.25 * canvWidth + xOffset;
-                y1 = 0.5 * canvHeight + yOffset;
-
-                x2 = 0.5 * canvWidth + xOffset;
-                y2 = 0.25 * canvHeight + yOffset;
-
-                x3 = 0.75 * canvWidth + xOffset;
-                y3 = 0.5 * canvHeight + yOffset;
-
-                x4 = 0.5 * canvWidth + xOffset;
-                y4 = 0.75 * canvHeight + yOffset;
-
-                double xCoords[] = {x1, x2, x3, x4};
-                double yCoords[] = {y1, y2, y3, y4};
-
-                gc.setFill(toBePainted.viewFillColor());
-                gc.fillPolygon(xCoords, yCoords, 4);
-
-                gc.setStroke(toBePainted.viewOutlineColor());
-                gc.strokePolygon(xCoords, yCoords, 4);
+                drawPolygon(gc, toBePainted, diamond, canvWidth, xOffset, canvHeight, yOffset);
                 break;
-
-
             case TRIANGLE:
-                //draw fill
-                x1 = 0.5 * canvWidth + xOffset;
-                y1 = 0.25 * canvHeight + yOffset;
-
-                x2 = 0.8 * canvWidth + xOffset;
-                y2 = 0.8 * canvHeight + yOffset;
-
-                x3 = 0.2 * canvWidth + xOffset;
-                y3 = 0.8 * canvHeight + yOffset;
-
-                double xCoordinates[] = {x1, x2, x3};
-                double yCoordinates[] = {y1, y2, y3};
-
-                gc.setFill(toBePainted.viewFillColor());
-                gc.fillPolygon(xCoordinates, yCoordinates, 3);
-
-                gc.setStroke(toBePainted.viewOutlineColor());
-                gc.strokePolygon(xCoordinates, yCoordinates, 3);
-
+                drawPolygon(gc, toBePainted, triangle, canvWidth, xOffset, canvHeight, yOffset);
                 break;
 
             default:
 
-                gc.setFill(Color.BLACK);
-                gc.fillOval(critterX, critterY, critterWidth, critterHeight);
                 break;
         }
+    }
+
+    private static void drawPolygon(GraphicsContext gc, Critter crit, double[][] shape, double canvWidth, double xOffset, double canvHeight, double yOffset)
+    {
+        double[] xCoords = new double[shape.length];
+        double[] yCoords = new double[shape.length];
+
+        for (int i = 0; i < shape.length; i++)
+        {
+            xCoords[i] = shape[i][0] * canvWidth + xOffset;
+            yCoords[i] = shape[i][1] * canvHeight + yOffset;
+        }
+        gc.setFill(crit.viewFillColor());
+        gc.fillPolygon(xCoords, yCoords, shape.length);
+
+        gc.setStroke(crit.viewOutlineColor());
+        gc.strokePolygon(xCoords, yCoords, shape.length);
     }
 }

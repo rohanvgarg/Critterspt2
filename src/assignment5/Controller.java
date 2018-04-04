@@ -30,6 +30,7 @@ public class Controller
         CrittersPane(controlsGridPane);
         TimeStepPane(controlsGridPane);
         QuitPane(controlsGridPane);
+        logPane(controlsGridPane);
 
 
         controls.setScene(new Scene(controlsGridPane));
@@ -55,7 +56,7 @@ public class Controller
         GridPane CrittersPane = new GridPane();
         CrittersPane.setHgap(5);
         CrittersPane.setVgap(5);
-        CrittersPane.setPadding(new Insets(2, 2, 2, 2));
+        CrittersPane.setPadding(new Insets(10, 2, 10, 2));
 
         Label mainLabel = new Label();
         mainLabel.setText("Spawn Menu");
@@ -67,8 +68,6 @@ public class Controller
         ObservableList<String> CritterList = Util.getAllCritterClasses();
         Main.critterSelectComboBox = new ComboBox(CritterList);
         Main.critterSelectComboBox.setValue(CritterList.get(0));
-
-
 
         Main.makeButton1 = new Button();
         Main.makeButton1.setText("Add 1");
@@ -88,9 +87,6 @@ public class Controller
 
         CrittersPane.add(mainLabel, 0, 0);
 
-
-
-
         GridPane subPane1 = new GridPane();
         subPane1.add(cType,0,0);
         subPane1.add(Main.critterSelectComboBox,1,0);
@@ -109,41 +105,42 @@ public class Controller
         CrittersPane.add(subPane2,0,2);
 
 
-
         mainPane.add(CrittersPane, 0, 0);
     }
 
 
+    protected static void logPane(GridPane mainPane)
+    {
+        Main.stats = new TextArea("Statistics displayed here");
+
+        mainPane.add(Main.stats, 0, 5, 1,1);
+    }
+
     private static void runStatsEventHandler(String text)
     {
-
         String displayString;
         List<Critter> critterList;
 
         try
         {
             critterList = Critter.getInstances(text);
-
             try
             {
                 Class<?> inClass = Class.forName(myPackage + "." + text);
                 java.lang.reflect.Method inMethod = inClass.getMethod("runStats", List.class);
 
                 displayString = (String) inMethod.invoke(null, critterList);
-                statisticsLabel.setText(displayString);
-
-
-            } catch (Exception ex)
+                Main.stats.setText(displayString);
+            }
+            catch (Exception ex)
             {
-
+                ex.printStackTrace();
                 throw new InvalidCritterException(text);
 
             }
 
         } catch (InvalidCritterException ex)
         {
-
-
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Error");
             alert.setHeaderText(null);
@@ -162,7 +159,7 @@ public class Controller
 
         timeStepGridPane.setHgap(10);
         timeStepGridPane.setVgap(10);
-        timeStepGridPane.setPadding(new Insets(150, 2, 10, 2));
+        timeStepGridPane.setPadding(new Insets(10, 2, 10, 2));
 
         Label TimeStepLabel = new Label();
         TimeStepLabel.setText("Time Step Menu");

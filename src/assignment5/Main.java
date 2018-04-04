@@ -32,6 +32,8 @@ public class Main extends Application
     public static Button makeButton10;
     public static Button runStatsButton;
 
+    public static TextArea stats;
+
     //main variables for animation
 	//main variables for drawing
 	static GridPane grid = new GridPane();

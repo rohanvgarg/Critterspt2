@@ -139,11 +139,11 @@ public class Critter2 extends Critter
             totalFightRate += c1.fightRate;
         }
 
-        toRet += ("Critter2");
-        toRet +=("--------");
+        toRet += ("Critter2\n");
+        toRet +=("--------\n");
         if(n>0)
         {
-            toRet +=("oldest:		" + highAge);
+            toRet +=("oldest:		" + highAge +"\n");
             toRet +=("avg age:	" + (double) (totalAge / n + '\n'));
             toRet +=("most fights:" + mostFights + " fights" + '\n');
             toRet +=("high fightrate:	" + (totalFightRate / (double) n) + '\n');
