@@ -18,39 +18,55 @@ public class View
 
     protected static void displayWorld(Canvas pane)
     {
-        double canvWidth = pane.getWidth() / Params.world_width;
-        double canvHeight = pane.getHeight() / Params.world_height;
+        //size of each grid box
+        double boxW = pane.getWidth() / Params.world_width;
+        double boxH = pane.getHeight() / Params.world_height;
 
+        //draw each grid box, not full size of the box
+        double innerSquareWidth = boxW * View.worldBoxScale;
+        double innerSquareHeight = boxH * View.worldBoxScale;
+
+
+        //draw line color
         GraphicsContext gc = pane.getGraphicsContext2D();
-
-        gc.clearRect(0, 0, pane.getWidth(), pane.getHeight());
         gc.setFill(View.worldBoxLineColor);
         gc.fillRect(0, 0, pane.getWidth(), pane.getHeight());
 
+        //get Critters to show
         Critter[][] toDisplay = Critter.getCritterWHMatrix();
+
+        //set box color
+        gc.setFill(View.worldBoxFillColor);
 
         for (int i = 0; i < toDisplay.length; i++)
         {
             for (int j = 0; j < toDisplay[i].length; j++)
             {
-                double innerSquareWidth = canvWidth * View.worldBoxScale;
-                double innerSquareHeight = canvHeight * View.worldBoxScale;
-                double xOffset = i * canvWidth;
-                double yOffset = j * canvHeight;
+                //starting point of boxes
+                double xOffset = i * boxW;
+                double yOffset = j * boxH;
 
-                gc.setFill(View.worldBoxFillColor);
-                gc.fillRect(((canvWidth - innerSquareWidth) / 2) + xOffset, ((canvHeight - innerSquareHeight) / 2) + yOffset, innerSquareWidth, innerSquareHeight);
+                gc.fillRect(((boxW - innerSquareWidth) / 2) + xOffset, ((boxH - innerSquareHeight) / 2) + yOffset, innerSquareWidth, innerSquareHeight);
+            }
+        }
 
-                Critter current = toDisplay[i][j];
-
-                if (current != null)
+        for (int i = 0; i < toDisplay.length; i++)
+        {
+            for (int j = 0; j < toDisplay[i].length; j++)
+            {
+                Critter c = toDisplay[i][j];
+                if (c != null)
                 {
+                    //starting point of boxes
+                    double xOffset = i * boxW;
+                    double yOffset = j * boxH;
+
                     double critterHeight = innerSquareHeight * 0.75;
                     double critterWidth = innerSquareWidth * 0.75;
-                    double critterX = (canvWidth - critterWidth) / 2 + xOffset;
-                    double critterY = (canvHeight - critterHeight) / 2 + yOffset;
+                    double critterX = (boxW - critterWidth) / 2 + xOffset;
+                    double critterY = (boxH - critterHeight) / 2 + yOffset;
 
-                    drawCritter(gc, current, critterX, critterY, critterWidth, critterHeight, canvWidth, xOffset, canvHeight, yOffset);
+                    drawCritter(gc, c, critterX, critterY, critterWidth, critterHeight, boxW, xOffset, boxH, yOffset);
                 }
             }
         }
@@ -182,41 +198,41 @@ public class View
 
 
     static class SuperCanvas extends Canvas
-	{
-		public SuperCanvas()
-		{
-			widthProperty().addListener(evt -> redraw());
-			heightProperty().addListener(evt -> redraw());
-		}
+    {
+        public SuperCanvas()
+        {
+            widthProperty().addListener(evt -> redraw());
+            heightProperty().addListener(evt -> redraw());
+        }
 
-		public SuperCanvas(double width, double height)
-		{
-			super(width, height);
-			widthProperty().addListener(evt -> redraw());
-			heightProperty().addListener(evt -> redraw());
-		}
+        public SuperCanvas(double width, double height)
+        {
+            super(width, height);
+            widthProperty().addListener(evt -> redraw());
+            heightProperty().addListener(evt -> redraw());
+        }
 
-		private void redraw()
-		{
-			Util.screenHeight = getHeight();
-			Util.screenWidth = getWidth();
-			//Critter.displayWorld();
-		}
+        private void redraw()
+        {
+            Util.screenHeight = getHeight();
+            Util.screenWidth = getWidth();
+            //Critter.displayWorld();
+        }
 
-		public double prefWidth(double height)
-		{
-			return getWidth();
-		}
+        public double prefWidth(double height)
+        {
+            return getWidth();
+        }
 
-		public double prefHeight(double width)
-		{
-			return getHeight();
-		}
+        public double prefHeight(double width)
+        {
+            return getHeight();
+        }
 
-		public boolean isResizable()
-		{
-			return true;
-		}
+        public boolean isResizable()
+        {
+            return true;
+        }
 
-	}
+    }
 }

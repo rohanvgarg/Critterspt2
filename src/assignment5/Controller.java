@@ -68,10 +68,10 @@ public class Controller
         makeButton1.setOnAction(e -> makeCritterHandler(Main.critterSelectComboBox.getValue(), 1));
         Button makeButton5 = new Button();
         makeButton5.setText("Add 5");
-        makeButton1.setOnAction(e -> makeCritterHandler(Main.critterSelectComboBox.getValue(), 5));
+        makeButton5.setOnAction(e -> makeCritterHandler(Main.critterSelectComboBox.getValue(), 5));
         Button makeButton10 = new Button();
         makeButton10.setText("Add 10");
-        makeButton1.setOnAction(e -> makeCritterHandler(Main.critterSelectComboBox.getValue(), 10));
+        makeButton10.setOnAction(e -> makeCritterHandler(Main.critterSelectComboBox.getValue(), 10));
 
         CrittersPane.add(mainLabel, 0, 0);
         CrittersPane.add(cType, 0, 1);
