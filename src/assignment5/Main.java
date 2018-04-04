@@ -62,7 +62,6 @@ public class Main extends Application
 		launch(args);
 	}
 
-
     @Override
     public void start(Stage primaryStage)
     {
@@ -79,17 +78,10 @@ public class Main extends Application
 
         Controller.makeController();
 
-
         Critter.displayWorld(displayCanvas);
 
-
         primaryStage.setScene(world);
-
-
-
         primaryStage.show();
-
-
 
 
         //If resize
@@ -101,7 +93,6 @@ public class Main extends Application
                 Critter.displayWorld(displayCanvas);
             }
         });
-
         world.widthProperty().addListener(new ChangeListener<Number>()
         {
             @Override
@@ -112,13 +103,4 @@ public class Main extends Application
         });
 
     }
-
-
-
-
-
-
-
-
-
 }

@@ -12,8 +12,8 @@ public class View
 {
     //CONFIGS
     public static final double worldBoxScale = 0.94;
-    public static final Paint worldBoxFillColor = Paint.valueOf("#3F51B5");
-    public static final Paint worldBoxLineColor = Paint.valueOf("#9E9E9E");
+    public static final Paint worldBoxFillColor = javafx.scene.paint.Color.GRAY;
+    public static final Paint worldBoxLineColor = javafx.scene.paint.Color.BLACK;
 
 
     protected static void displayWorld(Canvas pane)
@@ -22,7 +22,6 @@ public class View
         double canvHeight = pane.getHeight() / Params.world_height;
 
         GraphicsContext gc = pane.getGraphicsContext2D();
-
 
         gc.clearRect(0, 0, pane.getWidth(), pane.getHeight());
         gc.setFill(View.worldBoxLineColor);
@@ -53,10 +52,8 @@ public class View
 
                     drawCritter(gc, current, critterX, critterY, critterWidth, critterHeight, canvWidth, xOffset, canvHeight, yOffset);
                 }
-
             }
         }
-
 
     }
 
@@ -175,7 +172,6 @@ public class View
 
                 break;
 
-
             default:
 
                 gc.setFill(Color.BLACK);
@@ -216,7 +212,6 @@ public class View
 		{
 			return getHeight();
 		}
-
 
 		public boolean isResizable()
 		{

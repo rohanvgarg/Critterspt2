@@ -226,6 +226,7 @@ public abstract class Critter
     }
 
 
+    //returns population in matrix form
     protected static Critter[][] getCritterWHMatrix()
     {
         Critter[][] toRet = new Critter[Params.world_width][Params.world_height];
@@ -451,7 +452,7 @@ public abstract class Critter
 
     public abstract void doTimeStep();
 
-    public abstract boolean fight(String oponent);
+    public abstract boolean fight(String opponent);
 
     /* NEW FOR PROJECT 5 */
     public enum CritterShape
