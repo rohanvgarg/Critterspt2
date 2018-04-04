@@ -5,6 +5,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -321,11 +322,43 @@ public abstract class Critter
      */
     public static void makeCritter(String critter_class_name) throws InvalidCritterException
     {
+        try
+        {
+            Class cls = Class.forName(myPackage + "." + critter_class_name);
+            Critter object = (Critter) cls.newInstance();
+            population.add(object);
+        } catch (Exception e)
+        {
+            throw new InvalidCritterException(critter_class_name);
+        } catch (Error e)
+        {
+            throw new InvalidCritterException(critter_class_name);
+        }
     }
 
     public static List<Critter> getInstances(String critter_class_name) throws InvalidCritterException
     {
-        return null;
+        Class<?> critClass;
+        try
+        {
+            critClass = Class.forName(myPackage + "." + critter_class_name);
+
+        } catch (ClassNotFoundException | NoClassDefFoundError e)
+        {
+            throw new InvalidCritterException(critter_class_name);
+        }
+
+        List<Critter> toRet = new ArrayList();
+
+        for (Critter crit : population)
+        {
+            if (critClass.isInstance(crit))
+            {
+                toRet.add(crit);
+            }
+        }
+
+        return toRet;
     }
 
     public static String runStats(List<Critter> critters)
@@ -339,6 +372,8 @@ public abstract class Critter
      */
     public static void clearWorld()
     {
+        population.clear();
+        babies.clear();
     }
 
 
