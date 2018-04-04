@@ -25,34 +25,17 @@ public class Main extends Application
 
     //CONTROLLER SHIT
     public static ComboBox<String> critterSelectComboBox;
-	protected final static double scale = 0.5;
-	public static View.SuperCanvas gridCanvas = null;//Main canvas which the world is displayed
-	public static GraphicsContext gridGraphicsContext = null;
-	public static String myPackage = assignment5.Critter.class.getPackage().toString().split(" ")[1];
-	public static View.SuperCanvas mainCanvas = null; // primary world canvas
-	public static GraphicsContext mainGraphicsContext = null;
-	public static int mainRows = 10;
-	public static int mainCols = 10;
-	public static double mainLineWidth = 10;
-	public static String thisPackage = Critter.class.getPackage().toString().split(" ")[1];
-	public static ComboBox<String> statsType;
-	public static Label statsLabel;
-	static Button timeStepButton;
-	static TextField numStepsTextField;
+    public static Button timeStepButton;
+    public static Button quitButton;
+    public static Button makeButton1;
+    public static Button makeButton5;
+    public static Button makeButton10;
+    public static Button runStatsButton;
 
-	//main variables for animation
+    //main variables for animation
 	//main variables for drawing
 	static GridPane grid = new GridPane();
-	static GridPane animation;
-	static Button animationButton;
 
-	//main timing variables
-	static Button stopAnimationButton;
-	static Timer timer;
-
-	//stats variable
-	static TimerTask startAnimation;
-	static ScrollPane scrollpane = new ScrollPane();
 
 
 	//View Component

@@ -13,6 +13,8 @@ package assignment5;
 
 //ANDY's CRITTER
 
+import javafx.scene.paint.Color;
+
 /**
  This Critter always fights algae, and fights 80% of the time otherwise.
 
@@ -160,6 +162,11 @@ public class Critter2 extends Critter
     @Override
     public CritterShape viewShape()
     {
-        return null;
+        return CritterShape.SQUARE;
+    }
+
+    public javafx.scene.paint.Color viewOutlineColor()
+    {
+        return Color.RED;
     }
 }

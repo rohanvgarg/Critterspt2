@@ -9,13 +9,16 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+
 import java.util.*;
 
 import javafx.scene.control.Alert.AlertType;
+
 public class Controller
 {
     public static String myPackage = Critter.class.getPackage().toString().split(" ")[1];
-    static  Label statisticsLabel;
+
+    static Label statisticsLabel;
 
 
     protected static void makeController()
@@ -26,7 +29,6 @@ public class Controller
 
         CrittersPane(controlsGridPane);
         TimeStepPane(controlsGridPane);
-        StatsPane(controlsGridPane);
         QuitPane(controlsGridPane);
 
 
@@ -41,10 +43,10 @@ public class Controller
         quitButtonGridPane.setHgap(10);
         quitButtonGridPane.setVgap(10);
         quitButtonGridPane.setPadding(new Insets(10, 2, 10, 2));
-        Button quitButton = new Button();
-        quitButton.setText("Quit");
-        quitButton.setOnAction(e -> System.exit(0));
-        quitButtonGridPane.add(quitButton, 0, 0);
+        Main.quitButton = new Button();
+        Main.quitButton.setText("Quit");
+        Main.quitButton.setOnAction(e -> System.exit(0));
+        quitButtonGridPane.add(Main.quitButton, 0, 0);
         controlsGridPane.add(quitButtonGridPane, 0, 5);
     }
 
@@ -66,108 +68,80 @@ public class Controller
         Main.critterSelectComboBox = new ComboBox(CritterList);
         Main.critterSelectComboBox.setValue(CritterList.get(0));
 
-        Label critterQuantity = new Label();
-        critterQuantity.setText("Quantity");
 
-        Button makeButton1 = new Button();
-        makeButton1.setText("Add 1");
-        makeButton1.setOnAction(e -> makeCritterHandler(Main.critterSelectComboBox.getValue(), 1));
-        Button makeButton5 = new Button();
-        makeButton5.setText("Add 5");
-        makeButton5.setOnAction(e -> makeCritterHandler(Main.critterSelectComboBox.getValue(), 5));
-        Button makeButton10 = new Button();
-        makeButton10.setText("Add 10");
-        makeButton10.setOnAction(e -> makeCritterHandler(Main.critterSelectComboBox.getValue(), 10));
+
+        Main.makeButton1 = new Button();
+        Main.makeButton1.setText("Add 1");
+        Main.makeButton1.setOnAction(e -> makeCritterHandler(Main.critterSelectComboBox.getValue(), 1));
+
+        Main.makeButton5 = new Button();
+        Main.makeButton5.setText("Add 5");
+        Main.makeButton5.setOnAction(e -> makeCritterHandler(Main.critterSelectComboBox.getValue(), 5));
+
+        Main.makeButton10 = new Button();
+        Main.makeButton10.setText("Add 10");
+        Main.makeButton10.setOnAction(e -> makeCritterHandler(Main.critterSelectComboBox.getValue(), 10));
+
+        Main.runStatsButton = new Button();
+        Main.runStatsButton.setText("Run Stats");
+        Main.runStatsButton.setOnAction(e -> runStatsEventHandler(Main.critterSelectComboBox.getValue()));
 
         CrittersPane.add(mainLabel, 0, 0);
-        CrittersPane.add(cType, 0, 1);
-        CrittersPane.add(Main.critterSelectComboBox, 1, 1);
-        CrittersPane.add(critterQuantity, 0, 2);
-        CrittersPane.add(makeButton1, 0, 3);
-        CrittersPane.add(makeButton5, 1, 3);
-        CrittersPane.add(makeButton10, 2, 3);
+
+
+
+
+        GridPane subPane1 = new GridPane();
+        subPane1.add(cType,0,0);
+        subPane1.add(Main.critterSelectComboBox,1,0);
+        subPane1.setHgap(5);
+        subPane1.setVgap(5);
+
+        GridPane subPane2 = new GridPane();
+        subPane2.add(Main.makeButton1, 0,0);
+        subPane2.add(Main.makeButton5, 1,0);
+        subPane2.add(Main.makeButton10, 2,0);
+        subPane2.add(Main.runStatsButton, 3,0);
+        subPane2.setHgap(5);
+        subPane2.setVgap(5);
+
+        CrittersPane.add(subPane1,0,1);
+        CrittersPane.add(subPane2,0,2);
+
+
 
         mainPane.add(CrittersPane, 0, 0);
     }
 
-    protected static void StatsPane(GridPane mainPane){
 
-    GridPane statsGridPane=new GridPane();
-    statsGridPane.setHgap(5);
-    statsGridPane.setVgap(5);
-    statsGridPane.setPadding(new Insets(10, 2, 10, 2));
-
-    statisticsLabel=new Label();
-    statisticsLabel.setText("Run Statisitcs");
-    statsGridPane.add(statisticsLabel, 0,0);
-
-    Label statsTypeLabel=new Label();
-    statsTypeLabel.setText("Type");
-    statsGridPane.add(statsTypeLabel,0,1);
-
-    Button crit1Button ;
-    crit1Button = new Button("Run Stats - Critter 1");
-    statsGridPane.add(crit1Button, 2, 1);
-    crit1Button.setOnAction(e->runStatsEventHandler("Critter1"));
-
-
-    Button crit2Button ;
-    crit2Button = new Button("Run Stats - Critter 2");
-    statsGridPane.add(crit2Button, 4, 1);
-    //crit2Button.setOnAction(e->runStatsEventHandler(statsType.getValue()));
-
-
-     Button crit3Button ;
-     crit3Button = new Button("Run Stats - Critter 3");
-     statsGridPane.add(crit3Button, 6, 1);
-     //crit2Button.setOnAction(e->runStatsEventHandler(statsType.getValue()));
-
-     Button crit4Button;
-     crit4Button = new Button("Run Stats - Critter 4");
-     statsGridPane.add(crit4Button, 6, 1);
-     //crit2Button.setOnAction(e->runStatsEventHandler(statsType.getValue()));
-
-     Button algaeButton;
-     algaeButton = new Button("Run Stats - Algae");
-     statsGridPane.add(algaeButton, 2, 2);
-     //crit2Button.setOnAction(e->runStatsEventHandler(statsType.getValue()));
-
-     Button tragicButton;
-     tragicButton = new Button("Run Stats - TragicCritter");
-     statsGridPane.add(tragicButton, 4, 2);
-     //crit2Button.setOnAction(e->runStatsEventHandler(statsType.getValue()));
-
-     Button algeaphobicButton;
-     algeaphobicButton = new Button("Run Stats - Algaephobic Critter");
-     statsGridPane.add(algeaphobicButton, 6, 2);
-     //crit2Button.setOnAction(e->runStatsEventHandler(statsType.getValue()));
-
-    mainPane.add(statsGridPane,0,2);
-}
-
-    private static void runStatsEventHandler(String text){
+    private static void runStatsEventHandler(String text)
+    {
 
         String displayString;
         List<Critter> critterList;
 
-        try{
-            critterList=Critter.getInstances(text);
+        try
+        {
+            critterList = Critter.getInstances(text);
 
-            try{
-                Class<?> inClass=Class.forName(myPackage+"."+ text);
-                java.lang.reflect.Method inMethod=inClass.getMethod("runStats",List.class);
+            try
+            {
+                Class<?> inClass = Class.forName(myPackage + "." + text);
+                java.lang.reflect.Method inMethod = inClass.getMethod("runStats", List.class);
 
-                displayString=(String)inMethod.invoke(null,critterList);
+                displayString = (String) inMethod.invoke(null, critterList);
                 statisticsLabel.setText(displayString);
 
 
-            }catch(Exception ex){
+            } catch (Exception ex)
+            {
 
                 throw new InvalidCritterException(text);
 
             }
 
-        }catch(InvalidCritterException ex){
+        } catch (InvalidCritterException ex)
+        {
 
 
             Alert alert = new Alert(AlertType.INFORMATION);
@@ -182,8 +156,6 @@ public class Controller
     }
 
 
-
-
     protected static void TimeStepPane(GridPane mainPane)
     {
         GridPane timeStepGridPane = new GridPane();
@@ -196,77 +168,35 @@ public class Controller
         TimeStepLabel.setText("Time Step Menu");
         timeStepGridPane.add(TimeStepLabel, 0, 0);
 
+        ToggleGroup group = new ToggleGroup();
 
-        final Slider slider = new Slider(0, 100, 50);
-        final Label sliderValue = new Label("Number of Time Steps:");
-        final Color textColor = Color.BLACK;
+        Label quantitySteps = new Label();
+        quantitySteps.setText("Quantity of steps");
+        timeStepGridPane.add(quantitySteps, 0, 1);
 
-        slider.setValue(50);
-        slider.setShowTickLabels(true);
-        slider.setShowTickMarks(true);
-        slider.setMajorTickUnit(50);
-        slider.setSnapToTicks(true);
+        RadioButton rb1 = new RadioButton();
+        rb1.setText("Step 1");
+        rb1.setUserData(new Integer(1));
+        rb1.setSelected(true);
+        rb1.setToggleGroup(group);
+        timeStepGridPane.add(rb1,1,1);
 
+        RadioButton rb5 = new RadioButton();
+        rb5.setText("Step 5");
+        rb5.setUserData(new Integer(5));
+        rb5.setToggleGroup(group);
+        timeStepGridPane.add(rb5,2,1);
 
-        slider.valueProperty().addListener(new ChangeListener<Number>()
-        {
-            public void changed(ObservableValue<? extends Number> ov,
-                                Number old_val, Number new_val)
-            {
-                sliderValue.setText(String.format("%.2f", new_val));
-            }
-        });
-
-        GridPane.setConstraints(slider, 1, 1);
-        mainPane.getChildren().add(slider);
-
-        sliderValue.setTextFill(textColor);
-        GridPane.setConstraints(sliderValue, 0, 1);
-        mainPane.getChildren().add(sliderValue);
-
-
-        /*
-        GridPane sliderPane = new GridPane();
-		//sliderPane.setHgap(10);
-		//sliderPane.setVgap(10);
-		//slider.setValue(50);
-		slider.setShowTickLabels(true);
-		slider.setShowTickMarks(true);
-		slider.setMajorTickUnit(50);
-		//slider.setMinorTickCount(5);
-		slider.setSnapToTicks(true);
-		//slider.setBlockIncrement(10);
-		sliderPane.add(slider, 0, 0);
-
-		final int numStep = (int) slider.getValue();
-		GridPane numStepPane = new GridPane();
-		numStepPane.add(numStep, 0,0);
-
-		GridPane textOfSlider = new GridPane();
-		textOfSlider.add(numStep, 0, 0);
-
-		slider.valueProperty().addListener((ov, old_val, new_val) ->
-		{
-		    //int new_valright = (int) new_val;
-			//slider.setValue(new_valright);
-			numStep = (int)new_val;
-		});
-
-        //numStep.setTextFill(Color.BLACK);
-        GridPane.setConstraints(numStep, 2, 1);
-        grid.getChildren().add(numStep);
-
-		mainPane.add(textOfSlider, 0, 5);
-		mainPane.add(sliderPane, 0, 2);
-		*/
+        RadioButton rb20 = new RadioButton();
+        rb20.setText("Step 20");
+        rb20.setUserData(new Integer(20));
+        rb20.setToggleGroup(group);
+        timeStepGridPane.add(rb20,3,1);
 
         Main.timeStepButton = new Button();
         Main.timeStepButton.setText("Step");
-        Main.timeStepButton.setOnAction(e -> timeStepEventHandler((int) slider.getValue()));
-        //System.out.println((int)slider.getValue());
-        //timeStepButton.setOnAction(e -> System.out.println((int)slider.getValue()));
-        timeStepGridPane.add(Main.timeStepButton, 0, 4);
-
+        Main.timeStepButton.setOnAction(e -> timeStepEventHandler((int) group.getSelectedToggle().getUserData()));
+        timeStepGridPane.add(Main.timeStepButton, 0, 2);
 
         mainPane.add(timeStepGridPane, 0, 1);
     }

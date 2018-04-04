@@ -1,6 +1,8 @@
 package assignment5;
 
 
+import javafx.scene.paint.Color;
+
 /**
 This Critter always fights algae, and runs on default rather than fights.
 It reproduces on years that are multiples of 4, else it walks.
@@ -137,6 +139,11 @@ public class Critter1 extends Critter
     @Override
     public CritterShape viewShape()
     {
-        return null;
+        return CritterShape.STAR;
+    }
+
+    public javafx.scene.paint.Color viewOutlineColor()
+    {
+        return Color.PURPLE;
     }
 }

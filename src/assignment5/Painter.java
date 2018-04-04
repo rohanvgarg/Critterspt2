@@ -18,7 +18,6 @@ import javafx.scene.shape.Shape;
 
 public class Painter
 {
-
 	/*
 	 * Returns a square or a circle, according to shapeIndex
 	 */

@@ -26,8 +26,7 @@ public class View
         double innerSquareWidth = boxW * View.worldBoxScale;
         double innerSquareHeight = boxH * View.worldBoxScale;
 
-
-        //draw line color
+        //draw line color = "background" then boxes get drawn over this
         GraphicsContext gc = pane.getGraphicsContext2D();
         gc.setFill(View.worldBoxLineColor);
         gc.fillRect(0, 0, pane.getWidth(), pane.getHeight());
@@ -194,45 +193,5 @@ public class View
                 gc.fillOval(critterX, critterY, critterWidth, critterHeight);
                 break;
         }
-    }
-
-
-    static class SuperCanvas extends Canvas
-    {
-        public SuperCanvas()
-        {
-            widthProperty().addListener(evt -> redraw());
-            heightProperty().addListener(evt -> redraw());
-        }
-
-        public SuperCanvas(double width, double height)
-        {
-            super(width, height);
-            widthProperty().addListener(evt -> redraw());
-            heightProperty().addListener(evt -> redraw());
-        }
-
-        private void redraw()
-        {
-            Util.screenHeight = getHeight();
-            Util.screenWidth = getWidth();
-            //Critter.displayWorld();
-        }
-
-        public double prefWidth(double height)
-        {
-            return getWidth();
-        }
-
-        public double prefHeight(double width)
-        {
-            return getHeight();
-        }
-
-        public boolean isResizable()
-        {
-            return true;
-        }
-
     }
 }
