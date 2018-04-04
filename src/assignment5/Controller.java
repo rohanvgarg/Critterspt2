@@ -181,7 +181,6 @@ public class Controller
         Critter.displayWorld(Main.displayCanvas);
     }
 
-
     private static void makeCritterHandler(String type, int quantity)
     {
         if (type == null)
