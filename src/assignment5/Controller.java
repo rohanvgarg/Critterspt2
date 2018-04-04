@@ -3,6 +3,8 @@ package assignment5;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -29,9 +31,12 @@ public class Controller
 
         CrittersPane(controlsGridPane);
         TimeStepPane(controlsGridPane);
+        setSeedPane(controlsGridPane);
         QuitPane(controlsGridPane);
         logPane(controlsGridPane);
 
+        controlsGridPane.setGridLinesVisible(true);
+        controlsGridPane.setPadding(new Insets(5,5,5,5));
 
         controls.setScene(new Scene(controlsGridPane));
         controls.show();
@@ -130,13 +135,15 @@ public class Controller
                 java.lang.reflect.Method inMethod = inClass.getMethod("runStats", List.class);
 
                 displayString = (String) inMethod.invoke(null, critterList);
-                Main.stats.setText(displayString);
+
+                Main.stats.appendText("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+
+                Main.stats.appendText("\n" + displayString + "\n");
             }
             catch (Exception ex)
             {
                 ex.printStackTrace();
                 throw new InvalidCritterException(text);
-
             }
 
         } catch (InvalidCritterException ex)
@@ -150,6 +157,51 @@ public class Controller
 
         }
 
+    }
+
+    protected static void setSeedPane(GridPane mainPane)
+    {
+        GridPane seedPane = new GridPane();
+
+        Label seedPaneLabel = new Label();
+        seedPaneLabel.setText("Seed Menu");
+
+        seedPane.add(seedPaneLabel,0,0);
+
+        seedPane.setVgap(10);
+        seedPane.setHgap(10);
+        seedPane.setPadding(new Insets(10, 2, 10, 2));
+
+        Button seedButton = new Button("Set Seed");
+
+        TextField seedField = new TextField("Enter Seed");
+        seedField.setPromptText("Enter Seed");
+
+        seedButton.setOnAction(new EventHandler<ActionEvent>()
+        {
+            @Override
+            public void handle(ActionEvent event)
+            {
+                try
+                {
+                    int newSeed = Integer.parseInt(seedField.getText());
+                    Critter.setSeed(newSeed);
+                    Main.stats.appendText("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+                    Main.stats.appendText("\nSeed set!\n");
+                }
+                catch (Exception e)
+                {
+                    seedField.clear();
+                    Main.stats.appendText("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+                    Main.stats.appendText("\nBad seed!\n");
+
+                }
+
+            }
+        });
+        seedPane.add(seedButton, 0, 1);
+        seedPane.add(seedField,1,1);
+        mainPane.add(seedPane,0,2);
     }
 
 
