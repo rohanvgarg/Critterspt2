@@ -20,12 +20,10 @@ public class Controller
 {
     public static String myPackage = Critter.class.getPackage().toString().split(" ")[1];
 
-    static Label statisticsLabel;
-
-
     protected static void makeController()
     {
         Stage controls = new Stage();
+        controls.setResizable(false);
         controls.setTitle("Controller");
         GridPane controlsGridPane = new GridPane();
 
@@ -48,7 +46,7 @@ public class Controller
         GridPane quitButtonGridPane = new GridPane();
         quitButtonGridPane.setHgap(10);
         quitButtonGridPane.setVgap(10);
-        quitButtonGridPane.setPadding(new Insets(10, 2, 10, 2));
+        quitButtonGridPane.setPadding(new Insets(5, 5, 5, 5));
         Main.quitButton = new Button();
         Main.quitButton.setText("Quit");
         Main.quitButton.setOnAction(e -> System.exit(0));
@@ -61,11 +59,10 @@ public class Controller
         GridPane CrittersPane = new GridPane();
         CrittersPane.setHgap(5);
         CrittersPane.setVgap(5);
-        CrittersPane.setPadding(new Insets(10, 2, 10, 2));
+        CrittersPane.setPadding(new Insets(5, 5, 5, 5));
 
         Label mainLabel = new Label();
-        mainLabel.setText("Spawn Menu");
-
+        mainLabel.setText("Critter Menu");
 
         Label cType = new Label();
         cType.setText("Type");
@@ -170,7 +167,7 @@ public class Controller
 
         seedPane.setVgap(10);
         seedPane.setHgap(10);
-        seedPane.setPadding(new Insets(10, 2, 10, 2));
+        seedPane.setPadding(new Insets(5, 5, 5, 5));
 
         Button seedButton = new Button("Set Seed");
 
@@ -211,7 +208,7 @@ public class Controller
 
         timeStepGridPane.setHgap(10);
         timeStepGridPane.setVgap(10);
-        timeStepGridPane.setPadding(new Insets(10, 2, 10, 2));
+        timeStepGridPane.setPadding(new Insets(5, 5, 5, 5));
 
         Label TimeStepLabel = new Label();
         TimeStepLabel.setText("Time Step Menu");

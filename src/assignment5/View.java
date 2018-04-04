@@ -8,6 +8,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
+import javafx.scene.shape.Shape;
+
 public class View
 {
     //CONFIGS
@@ -21,6 +23,9 @@ public class View
     private final static double[][] square = {{0.12, 0.12}, {0.12, 0.88}, {0.88, 0.88}, {0.88, 0.12}};
     private final static double[][] diamond = {{0.50, 0.06}, {0.25, 0.50}, {0.50, 0.94}, {0.75, 0.50}};
     private final static double[][] star = {{0.20, 0.95}, {0.50, 0.75}, {0.80, 0.95}, {0.68, 0.60}, {0.95, 0.40}, {0.62, 0.38}, {0.50, 0.05}, {0.38, 0.38}, {0.05, 0.40}, {0.32, 0.64}};
+
+    //Shapes on screen
+    private static Shape[][] Shapes = new Shape[Params.world_width][Params.world_height];
 
     protected static void displayWorld(Canvas pane)
     {
