@@ -154,7 +154,10 @@ public abstract class Critter
 
         GraphicsContext gc = pane.getGraphicsContext2D();
 
+
         gc.clearRect(0, 0, pane.getWidth(), pane.getHeight());
+        gc.setFill(View.worldBoxLineColor);
+        gc.fillRect(0, 0, pane.getWidth(), pane.getHeight());
 
         Critter[][] toDisplay = getCritterWHMatrix();
 
@@ -162,12 +165,12 @@ public abstract class Critter
         {
             for (int j = 0; j < toDisplay[i].length; j++)
             {
-                double innerSquareWidth = canvWidth*0.8;
-                double innerSquareHeight = canvHeight*0.8;
+                double innerSquareWidth = canvWidth * View.worldBoxScale;
+                double innerSquareHeight = canvHeight * View.worldBoxScale;
                 double xOffset = i * canvWidth;
                 double yOffset = j * canvHeight;
 
-                gc.setFill(Paint.valueOf("#238b2d"));
+                gc.setFill(View.worldBoxFillColor);
                 gc.fillRect(((canvWidth - innerSquareWidth) / 2) + xOffset, ((canvHeight - innerSquareHeight) / 2) + yOffset, innerSquareWidth, innerSquareHeight);
 
                 Critter current = toDisplay[i][j];
@@ -278,9 +281,9 @@ public abstract class Critter
 
                 gc.setStroke(toBePainted.viewOutlineColor());
                 gc.strokePolygon(xCoords, yCoords, 4);
-
-
                 break;
+
+
             case TRIANGLE:
                 //draw fill
                 x1 = 0.5 * canvWidth + xOffset;
@@ -309,8 +312,6 @@ public abstract class Critter
                 gc.setFill(Color.BLACK);
                 gc.fillOval(critterX, critterY, critterWidth, critterHeight);
                 break;
-
-
         }
     }
 
