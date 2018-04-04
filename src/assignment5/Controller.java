@@ -22,7 +22,9 @@ public class Controller
 
         CrittersPane(controlsGridPane);
         TimeStepPane(controlsGridPane);
+        StatsPane(controlsGridPane);
         QuitPane(controlsGridPane);
+
 
         controls.setScene(new Scene(controlsGridPane));
         controls.show();
@@ -83,6 +85,63 @@ public class Controller
 
         mainPane.add(CrittersPane, 0, 0);
     }
+
+    protected static void StatsPane(GridPane mainPane){
+
+    GridPane statsGridPane=new GridPane();
+    statsGridPane.setHgap(5);
+    statsGridPane.setVgap(5);
+    statsGridPane.setPadding(new Insets(10, 2, 10, 2));
+
+    Label statisticsLabel=new Label();
+    statisticsLabel.setText("Run Statisitcs");
+    statsGridPane.add(statisticsLabel, 0,0);
+
+    Label statsTypeLabel=new Label();
+    statsTypeLabel.setText("Type");
+    statsGridPane.add(statsTypeLabel,0,1);
+
+    Button crit1Button ;
+    crit1Button = new Button("Run Stats - Critter 1");
+    statsGridPane.add(crit1Button, 2, 1);
+    //crit1Button.setOnAction(e->runStatsEventHandler("Critter1"));
+
+
+    Button crit2Button ;
+    crit2Button = new Button("Run Stats - Critter 2");
+    statsGridPane.add(crit2Button, 4, 1);
+    //crit2Button.setOnAction(e->runStatsEventHandler(statsType.getValue()));
+
+
+     Button crit3Button ;
+     crit3Button = new Button("Run Stats - Critter 3");
+     statsGridPane.add(crit3Button, 6, 1);
+     //crit2Button.setOnAction(e->runStatsEventHandler(statsType.getValue()));
+
+     Button crit4Button;
+     crit4Button = new Button("Run Stats - Critter 4");
+     statsGridPane.add(crit4Button, 6, 1);
+     //crit2Button.setOnAction(e->runStatsEventHandler(statsType.getValue()));
+
+     Button algaeButton;
+     algaeButton = new Button("Run Stats - Algae");
+     statsGridPane.add(algaeButton, 2, 2);
+     //crit2Button.setOnAction(e->runStatsEventHandler(statsType.getValue()));
+
+     Button tragicButton;
+     tragicButton = new Button("Run Stats - TragicCritter");
+     statsGridPane.add(tragicButton, 4, 2);
+     //crit2Button.setOnAction(e->runStatsEventHandler(statsType.getValue()));
+
+     Button algeaphobicButton;
+     algeaphobicButton = new Button("Run Stats - Algaephobic Critter");
+     statsGridPane.add(algeaphobicButton, 6, 2);
+     //crit2Button.setOnAction(e->runStatsEventHandler(statsType.getValue()));
+
+    mainPane.add(statsGridPane,0,2);
+}
+
+
 
     protected static void TimeStepPane(GridPane mainPane)
     {
