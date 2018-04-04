@@ -3,13 +3,16 @@ package assignment5;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.scene.paint.Color;
 
@@ -17,9 +20,11 @@ import javafx.scene.paint.Color;
 import java.util.Timer;
 import java.util.TimerTask;
 
-
 public class Main extends Application
 {
+
+    //CONTROLLER SHIT
+    public static ComboBox<String> critterSelectComboBox;
 	protected final static double scale = 0.5;
 	public static View.SuperCanvas gridCanvas = null;//Main canvas which the world is displayed
 	public static GraphicsContext gridGraphicsContext = null;
@@ -49,233 +54,71 @@ public class Main extends Application
 	static TimerTask startAnimation;
 	static ScrollPane scrollpane = new ScrollPane();
 
+
+	//View Component
+    public static Canvas displayCanvas;
 	public static void main(String[] args)
 	{
 		launch(args);
 	}
 
 
-	protected static void QuitPane(GridPane controlsGridPane)
-	{
-		GridPane quitButtonGridPane = new GridPane();
-		quitButtonGridPane.setHgap(10);
-		quitButtonGridPane.setVgap(10);
-		quitButtonGridPane.setPadding(new Insets(10, 2, 10, 2));
-		Button quitButton = new Button();
-		quitButton.setText("Quit");
-		quitButton.setOnAction(e -> System.exit(0));
-		quitButtonGridPane.add(quitButton, 0, 0);
-		controlsGridPane.add(quitButtonGridPane, 0, 5);
-	}
+    @Override
+    public void start(Stage primaryStage)
+    {
+        primaryStage.setTitle("View");
 
-	protected static void CrittersPane(GridPane mainPane)
-	{
-		GridPane CrittersPane = new GridPane();
-		CrittersPane.setHgap(5);
-		CrittersPane.setVgap(5);
-		CrittersPane.setPadding(new Insets(2, 2, 2, 2));
+        displayCanvas = new Canvas();
+        Pane displayPane = new Pane(displayCanvas);
+        Scene world = new Scene(displayPane, 700, 700);
+        GraphicsContext gc = displayCanvas.getGraphicsContext2D();
+        gc.fillRect(0, 0, 100, 100);
 
-		Label mainLabel = new Label();
-		mainLabel.setText("Spawn Menu");
+        displayCanvas.widthProperty().bind(world.widthProperty());
+        displayCanvas.heightProperty().bind(world.heightProperty());
+
+        Controller.makeController();
 
 
-		Label cType = new Label();
-		cType.setText("Type");
-
-		ComboBox<String> critterSelectComboBox = new ComboBox<String>();
-		critterSelectComboBox.getItems().addAll(Util.getAllCritterClasses());
-
-		Label critterQuantity = new Label();
-		critterQuantity.setText("Quantity");
-
-		Button makeButton1 = new Button();
-		makeButton1.setText("Add 1");
-		makeButton1.setOnAction(e -> makeCritterHandler(critterSelectComboBox.getValue(), 1));
-		Button makeButton5 = new Button();
-		makeButton5.setText("Add 5");
-		makeButton1.setOnAction(e -> makeCritterHandler(critterSelectComboBox.getValue(), 5));
-		Button makeButton10 = new Button();
-		makeButton10.setText("Add 10");
-		makeButton1.setOnAction(e -> makeCritterHandler(critterSelectComboBox.getValue(), 10));
+        Critter.displayWorld(displayCanvas);
 
 
-		CrittersPane.add(mainLabel, 0, 0);
-		CrittersPane.add(cType, 0, 1);
-		CrittersPane.add(critterSelectComboBox, 1, 1);
-		CrittersPane.add(critterQuantity, 0, 2);
-		CrittersPane.add(makeButton1, 0, 3);
-		CrittersPane.add(makeButton5, 1, 3);
-		CrittersPane.add(makeButton10, 2, 3);
-
-		mainPane.add(CrittersPane, 0, 0);
-
-	}
-
-	protected static void TimeStepPane(GridPane mainPane)
-	{
-		GridPane timeStepGridPane = new GridPane();
-
-		timeStepGridPane.setHgap(10);
-		timeStepGridPane.setVgap(10);
-		timeStepGridPane.setPadding(new Insets(150, 2, 10, 2));
-
-		Label TimeStepLabel = new Label();
-		TimeStepLabel.setText("Time Step Menu");
-		timeStepGridPane.add(TimeStepLabel, 0, 0);
+        primaryStage.setScene(world);
 
 
-		final Slider slider = new Slider(0, 100, 50);
-        final Label sliderValue = new Label("Number of Time Steps:");
-        final Color textColor = Color.BLACK;
 
-        slider.setValue(50);
-        slider.setShowTickLabels(true);
-        slider.setShowTickMarks(true);
-        slider.setMajorTickUnit(50);
-        slider.setSnapToTicks(true);
+        primaryStage.show();
 
 
-        slider.valueProperty().addListener(new ChangeListener<Number>() {
-            public void changed(ObservableValue<? extends Number> ov,
-                                Number old_val, Number new_val) {
-                sliderValue.setText(String.format("%.2f", new_val));
+
+
+        //If resize
+        world.heightProperty().addListener(new ChangeListener<Number>()
+        {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue)
+            {
+                Critter.displayWorld(displayCanvas);
             }
         });
 
-        GridPane.setConstraints(slider, 1, 1);
-        mainPane.getChildren().add(slider);
+        world.widthProperty().addListener(new ChangeListener<Number>()
+        {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue)
+            {
+                Critter.displayWorld(displayCanvas);
+            }
+        });
 
-        sliderValue.setTextFill(textColor);
-        GridPane.setConstraints(sliderValue, 0, 1);
-        mainPane.getChildren().add(sliderValue);
-
-
-        /*
-        GridPane sliderPane = new GridPane();
-		//sliderPane.setHgap(10);
-		//sliderPane.setVgap(10);
-		//slider.setValue(50);
-		slider.setShowTickLabels(true);
-		slider.setShowTickMarks(true);
-		slider.setMajorTickUnit(50);
-		//slider.setMinorTickCount(5);
-		slider.setSnapToTicks(true);
-		//slider.setBlockIncrement(10);
-		sliderPane.add(slider, 0, 0);
-
-		final int numStep = (int) slider.getValue();
-		GridPane numStepPane = new GridPane();
-		numStepPane.add(numStep, 0,0);
-
-		GridPane textOfSlider = new GridPane();
-		textOfSlider.add(numStep, 0, 0);
-
-		slider.valueProperty().addListener((ov, old_val, new_val) ->
-		{
-		    //int new_valright = (int) new_val;
-			//slider.setValue(new_valright);
-			numStep = (int)new_val;
-		});
-
-        //numStep.setTextFill(Color.BLACK);
-        GridPane.setConstraints(numStep, 2, 1);
-        grid.getChildren().add(numStep);
-
-		mainPane.add(textOfSlider, 0, 5);
-		mainPane.add(sliderPane, 0, 2);
-		*/
-
-		timeStepButton = new Button();
-		timeStepButton.setText("Step");
-		timeStepButton.setOnAction(e -> timeStepEventHandler((int)slider.getValue()));
-		//System.out.println((int)slider.getValue());
-		//timeStepButton.setOnAction(e -> System.out.println((int)slider.getValue()));
-		timeStepGridPane.add(timeStepButton, 0, 4);
+    }
 
 
-		mainPane.add(timeStepGridPane, 0, 1);
-	}
-
-	private static void makeCritterHandler(String type, int quantity)
-	{
-		if (type == null)
-		{
-			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setTitle("Error");
-			alert.setHeaderText(null);
-			alert.setContentText("Critter not chosen");
-			alert.showAndWait();
-			return;
-		}
-
-		try
-		{
-			for (int i = 0; i < quantity; i++)
-			{
-				assignment5.Critter.makeCritter(type);
-
-			}
-		} catch (assignment5.InvalidCritterException ex)
-		{
-			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setTitle("Error");
-			alert.setHeaderText(null);
-
-			alert.setContentText("Invalid Critter Exception thrown");
-
-		}
-		assignment5.Critter.displayWorld(grid);
-
-	}
-
-	private static void timeStepEventHandler(int numSteps)
-	{
-		int step = numSteps;
-		for (int i = 0; i < step; i++)
-		{
-			Critter.worldTimeStep();
-		}
-		Critter.displayWorld(grid);
-
-	}
-
-	@Override
-	public void start(Stage primaryStage)
-	{
-		try
-		{
-			Stage splash = new Stage();
-			splash.setTitle("Splash");
-			BorderPane pane = new BorderPane();
-			Button startButton = new Button("Start!");
-			startButton.setMaxHeight(100);
-			startButton.setMaxWidth(100);
-			pane.setCenter(startButton);
-			Scene scene = new Scene(grid, 500, 500);
 
 
-			Scene menuScene = new Scene(pane, 1200, 720);
-
-			grid.setGridLinesVisible(true);
 
 
-			splash.setScene(scene);
-			splash.setScene(menuScene);
-			splash.show();
 
-			//launch game button
-			startButton.setOnAction(event ->
-			{
-				splash.hide();
-                Controller.makeController();
-                View.makeView(primaryStage);
-
-			});
-		} catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
 
 
 }

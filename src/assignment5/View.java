@@ -21,7 +21,6 @@ public class View
 		Main.gridCanvas.heightProperty().bind(Main.grid.heightProperty());
 		primaryStage.setScene(new Scene(root));
 
-		makeGrid(null);
 
 
 		primaryStage.show();
@@ -68,23 +67,6 @@ public class View
 	}
 
 
-
-	public static void makeGrid(Critter[][] world)
-	{
-		Main.gridGraphicsContext.setFill(Color.SKYBLUE);
-		Main.gridGraphicsContext.fillRect(0, 0, Util.screenWidth, Util.screenHeight);
-		Main.gridGraphicsContext.setFill(Color.BLACK);
-
-
-		if (Main.grid == null)
-		{
-			return;
-		}
-
-		drawCritters(world, Util.widthBetween, Util.heightBetween);
-		//statisticsEventHandler(statisticsComboBox.getValue());
-
-	}
 
 	protected static void drawCritters(Critter[][] grid, double widthBetweenLines, double heightBetweenLines)
 	{
