@@ -35,17 +35,17 @@ public class Main extends Application
     public static TextArea stats;
 
     //main variables for animation
-	//main variables for drawing
-	static GridPane grid = new GridPane();
+    //main variables for drawing
+    static GridPane grid = new GridPane();
 
 
-
-	//View Component
+    //View Component
     public static Canvas displayCanvas;
-	public static void main(String[] args)
-	{
-		launch(args);
-	}
+
+    public static void main(String[] args)
+    {
+        launch(args);
+    }
 
     @Override
     public void start(Stage primaryStage)
@@ -67,6 +67,7 @@ public class Main extends Application
 
         primaryStage.setScene(world);
         primaryStage.show();
+        primaryStage.setOnHiding(e -> System.exit(0));
 
 
         //If resize

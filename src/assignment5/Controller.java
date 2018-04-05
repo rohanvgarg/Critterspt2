@@ -18,6 +18,7 @@ import javafx.scene.control.Alert.AlertType;
 
 public class Controller
 {
+    private static TextArea stats;
     public static String myPackage = Critter.class.getPackage().toString().split(" ")[1];
 
     protected static void makeController()
@@ -30,14 +31,16 @@ public class Controller
         CrittersPane(controlsGridPane);
         TimeStepPane(controlsGridPane);
         setSeedPane(controlsGridPane);
-        QuitPane(controlsGridPane);
         logPane(controlsGridPane);
 
-        controlsGridPane.setGridLinesVisible(true);
-        controlsGridPane.setPadding(new Insets(5,5,5,5));
+        QuitPane(controlsGridPane);
 
+        controlsGridPane.setGridLinesVisible(true);
+        controlsGridPane.setPadding(new Insets(5, 5, 5, 5));
         controls.setScene(new Scene(controlsGridPane));
+
         controls.show();
+        controls.setOnHiding(e -> System.exit(0));
     }
 
 
@@ -47,10 +50,10 @@ public class Controller
         quitButtonGridPane.setHgap(10);
         quitButtonGridPane.setVgap(10);
         quitButtonGridPane.setPadding(new Insets(5, 5, 5, 5));
-        Main.quitButton = new Button();
-        Main.quitButton.setText("Quit");
-        Main.quitButton.setOnAction(e -> System.exit(0));
-        quitButtonGridPane.add(Main.quitButton, 0, 0);
+        Button quitButton = new Button();
+        quitButton.setText("Quit");
+        quitButton.setOnAction(e -> System.exit(0));
+        quitButtonGridPane.add(quitButton, 0, 0);
         controlsGridPane.add(quitButtonGridPane, 0, 5);
     }
 
@@ -68,43 +71,43 @@ public class Controller
         cType.setText("Type");
 
         ObservableList<String> CritterList = Util.getAllCritterClasses();
-        Main.critterSelectComboBox = new ComboBox(CritterList);
-        Main.critterSelectComboBox.setValue(CritterList.get(0));
+        ComboBox critterSelectComboBox = new ComboBox(CritterList);
+        critterSelectComboBox.setValue(CritterList.get(0));
 
-        Main.makeButton1 = new Button();
-        Main.makeButton1.setText("Add 1");
-        Main.makeButton1.setOnAction(e -> makeCritterHandler(Main.critterSelectComboBox.getValue(), 1));
+        Button makeButton1 = new Button();
+        makeButton1.setText("Add 1");
+        makeButton1.setOnAction(e -> makeCritterHandler((String) critterSelectComboBox.getValue(), 1));
 
-        Main.makeButton5 = new Button();
-        Main.makeButton5.setText("Add 5");
-        Main.makeButton5.setOnAction(e -> makeCritterHandler(Main.critterSelectComboBox.getValue(), 5));
+        Button makeButton5 = new Button();
+        makeButton5.setText("Add 5");
+        makeButton5.setOnAction(e -> makeCritterHandler((String) critterSelectComboBox.getValue(), 5));
 
-        Main.makeButton10 = new Button();
-        Main.makeButton10.setText("Add 10");
-        Main.makeButton10.setOnAction(e -> makeCritterHandler(Main.critterSelectComboBox.getValue(), 10));
+        Button makeButton10 = new Button();
+        makeButton10.setText("Add 10");
+        makeButton10.setOnAction(e -> makeCritterHandler((String) critterSelectComboBox.getValue(), 10));
 
-        Main.runStatsButton = new Button();
-        Main.runStatsButton.setText("Run Stats");
-        Main.runStatsButton.setOnAction(e -> runStatsEventHandler(Main.critterSelectComboBox.getValue()));
+        Button  runStatsButton = new Button();
+        runStatsButton.setText("Run Stats");
+        runStatsButton.setOnAction(e -> runStatsEventHandler((String) critterSelectComboBox.getValue()));
 
         CrittersPane.add(mainLabel, 0, 0);
 
         GridPane subPane1 = new GridPane();
-        subPane1.add(cType,0,0);
-        subPane1.add(Main.critterSelectComboBox,1,0);
+        subPane1.add(cType, 0, 0);
+        subPane1.add(critterSelectComboBox, 1, 0);
         subPane1.setHgap(5);
         subPane1.setVgap(5);
 
         GridPane subPane2 = new GridPane();
-        subPane2.add(Main.makeButton1, 0,0);
-        subPane2.add(Main.makeButton5, 1,0);
-        subPane2.add(Main.makeButton10, 2,0);
-        subPane2.add(Main.runStatsButton, 3,0);
+        subPane2.add(makeButton1, 0, 0);
+        subPane2.add(makeButton5, 1, 0);
+        subPane2.add(makeButton10, 2, 0);
+        subPane2.add(runStatsButton, 3, 0);
         subPane2.setHgap(5);
         subPane2.setVgap(5);
 
-        CrittersPane.add(subPane1,0,1);
-        CrittersPane.add(subPane2,0,2);
+        CrittersPane.add(subPane1, 0, 1);
+        CrittersPane.add(subPane2, 0, 2);
 
 
         mainPane.add(CrittersPane, 0, 0);
@@ -113,9 +116,9 @@ public class Controller
 
     protected static void logPane(GridPane mainPane)
     {
-        Main.stats = new TextArea("Statistics displayed here");
+         stats = new TextArea("Statistics displayed here");
 
-        mainPane.add(Main.stats, 0, 5, 1,1);
+        mainPane.add(stats, 0, 5, 1, 1);
     }
 
     private static void runStatsEventHandler(String text)
@@ -133,11 +136,10 @@ public class Controller
 
                 displayString = (String) inMethod.invoke(null, critterList);
 
-                Main.stats.appendText("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+                stats.appendText("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
 
-                Main.stats.appendText("\n" + displayString + "\n");
-            }
-            catch (Exception ex)
+                stats.appendText("\n" + displayString + "\n");
+            } catch (Exception ex)
             {
                 ex.printStackTrace();
                 throw new InvalidCritterException(text);
@@ -163,7 +165,7 @@ public class Controller
         Label seedPaneLabel = new Label();
         seedPaneLabel.setText("Seed Menu");
 
-        seedPane.add(seedPaneLabel,0,0);
+        seedPane.add(seedPaneLabel, 0, 0);
 
         seedPane.setVgap(10);
         seedPane.setHgap(10);
@@ -183,22 +185,21 @@ public class Controller
                 {
                     int newSeed = Integer.parseInt(seedField.getText());
                     Critter.setSeed(newSeed);
-                    Main.stats.appendText("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
-                    Main.stats.appendText("\nSeed set!\n");
-                }
-                catch (Exception e)
+                    stats.appendText("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+                    stats.appendText("\nSeed set!\n");
+                } catch (Exception e)
                 {
                     seedField.clear();
-                    Main.stats.appendText("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
-                    Main.stats.appendText("\nBad seed!\n");
+                    stats.appendText("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+                    stats.appendText("\nBad seed!\n");
 
                 }
 
             }
         });
         seedPane.add(seedButton, 0, 1);
-        seedPane.add(seedField,1,1);
-        mainPane.add(seedPane,0,2);
+        seedPane.add(seedField, 1, 1);
+        mainPane.add(seedPane, 0, 2);
     }
 
 
@@ -225,32 +226,31 @@ public class Controller
         rb1.setUserData(new Integer(1));
         rb1.setSelected(true);
         rb1.setToggleGroup(group);
-        timeStepGridPane.add(rb1,1,1);
+        timeStepGridPane.add(rb1, 1, 1);
 
         RadioButton rb5 = new RadioButton();
         rb5.setText("Step 5");
         rb5.setUserData(new Integer(5));
         rb5.setToggleGroup(group);
-        timeStepGridPane.add(rb5,2,1);
+        timeStepGridPane.add(rb5, 2, 1);
 
         RadioButton rb20 = new RadioButton();
         rb20.setText("Step 20");
         rb20.setUserData(new Integer(20));
         rb20.setToggleGroup(group);
-        timeStepGridPane.add(rb20,3,1);
+        timeStepGridPane.add(rb20, 3, 1);
 
-        Main.timeStepButton = new Button();
-        Main.timeStepButton.setText("Step");
-        Main.timeStepButton.setOnAction(e -> timeStepEventHandler((int) group.getSelectedToggle().getUserData()));
-        timeStepGridPane.add(Main.timeStepButton, 0, 2);
+        Button timeStepButton = new Button();
+        timeStepButton.setText("Step");
+        timeStepButton.setOnAction(e -> timeStepEventHandler((int) group.getSelectedToggle().getUserData()));
+        timeStepGridPane.add(timeStepButton, 0, 2);
 
         mainPane.add(timeStepGridPane, 0, 1);
     }
 
     private static void timeStepEventHandler(int numSteps)
     {
-        int step = numSteps;
-        for (int i = 0; i < step; i++)
+        for (int i = 0; i < numSteps; i++)
         {
             Critter.worldTimeStep();
         }

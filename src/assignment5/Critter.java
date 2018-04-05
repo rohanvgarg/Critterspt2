@@ -128,17 +128,21 @@ public abstract class Critter
             crit.energy -= Params.rest_energy_cost;
         }
 
-        //generate algae
-        for (int i = 0; i < Params.refresh_algae_count; i++)
+        //make algae
+        int algae = Params.refresh_algae_count;
+        try
         {
-            try
+            for (int i = 0; i < algae; i++)
             {
+                System.out.println("!!!!!!!!!!!!!!!");
                 makeCritter("Algae");
-            } catch (InvalidCritterException e)
-            {
-                e.printStackTrace();
+
             }
+        } catch (InvalidCritterException e)
+        {
+            e.printStackTrace();
         }
+
 
         //add babies
         for (Critter babe : babies)

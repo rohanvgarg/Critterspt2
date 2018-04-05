@@ -1,7 +1,5 @@
 package assignment5;
 
-import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -14,18 +12,15 @@ public class View
 {
     //CONFIGS
     public static final double worldBoxScale = 0.94;
+    // public static final double critterSpriteScale = 0.5;
     public static final Paint worldBoxFillColor = javafx.scene.paint.Color.GRAY;
     public static final Paint worldBoxLineColor = javafx.scene.paint.Color.BLACK;
 
-
-    //SHAPE constants
+    //SHAPES
     private final static double[][] triangle = {{0.50, 0.06}, {0.06, 0.78}, {0.94, 0.78}};
-    private final static double[][] square = {{0.12, 0.12}, {0.12, 0.88}, {0.88, 0.88}, {0.88, 0.12}};
     private final static double[][] diamond = {{0.50, 0.06}, {0.25, 0.50}, {0.50, 0.94}, {0.75, 0.50}};
     private final static double[][] star = {{0.20, 0.95}, {0.50, 0.75}, {0.80, 0.95}, {0.68, 0.60}, {0.95, 0.40}, {0.62, 0.38}, {0.50, 0.05}, {0.38, 0.38}, {0.05, 0.40}, {0.32, 0.64}};
 
-    //Shapes on screen
-    private static Shape[][] Shapes = new Shape[Params.world_width][Params.world_height];
 
     protected static void displayWorld(Canvas pane)
     {
@@ -42,10 +37,10 @@ public class View
         gc.setFill(View.worldBoxLineColor);
         gc.fillRect(0, 0, pane.getWidth(), pane.getHeight());
 
-        //get Critters to show
+        //get some Critters to show
         Critter[][] toDisplay = Critter.getCritterWHMatrix();
 
-        //set box color
+        //set inner box color
         gc.setFill(View.worldBoxFillColor);
 
         for (int i = 0; i < toDisplay.length; i++)
@@ -56,6 +51,7 @@ public class View
                 double xOffset = i * boxW;
                 double yOffset = j * boxH;
 
+                //draw a smaller box centered inside the big box
                 gc.fillRect(((boxW - innerSquareWidth) / 2) + xOffset, ((boxH - innerSquareHeight) / 2) + yOffset, innerSquareWidth, innerSquareHeight);
             }
         }
@@ -65,18 +61,20 @@ public class View
             for (int j = 0; j < toDisplay[i].length; j++)
             {
                 Critter c = toDisplay[i][j];
+
+                //only draw if there is a critter here
                 if (c != null)
                 {
                     //starting point of boxes
                     double xOffset = i * boxW;
                     double yOffset = j * boxH;
 
-                    double critterHeight = innerSquareHeight * 0.75;
-                    double critterWidth = innerSquareWidth * 0.75;
-                    double critterX = (boxW - critterWidth) / 2 + xOffset;
-                    double critterY = (boxH - critterHeight) / 2 + yOffset;
+                    //size of the Critter Sprite to draw
+                    double critterHeight = innerSquareHeight * 0.8;
+                    double critterWidth = innerSquareWidth * 0.8;
 
-                    drawCritter(gc, c, critterX, critterY, critterWidth, critterHeight, boxW, xOffset, boxH, yOffset);
+                    //draw critter at box xOffset yOffset, centered in that box
+                    drawCritter(gc, c, (boxW - critterWidth) / 2 + xOffset, (boxH - critterHeight) / 2 + yOffset, critterWidth, critterHeight, boxW, xOffset, boxH, yOffset);
                 }
             }
         }
@@ -86,29 +84,20 @@ public class View
     private static void drawCritter(GraphicsContext gc, Critter toBePainted, double critterX, double critterY, double critterWidth, double critterHeight, double canvWidth, double xOffset, double canvHeight, double yOffset)
     {
         Critter.CritterShape critShape = toBePainted.viewShape();
+        gc.setStroke(toBePainted.viewOutlineColor());
+        gc.setFill(toBePainted.viewFillColor());
         switch (critShape)
         {
             case CIRCLE:
-                //draw fill
-                gc.setFill(toBePainted.viewFillColor());
                 gc.fillOval(critterX, critterY, critterWidth, critterHeight);
-
-                //draw outline
-                gc.setStroke(toBePainted.viewOutlineColor());
                 gc.strokeOval(critterX, critterY, critterWidth, critterHeight);
-
                 break;
 
             case SQUARE:
-                //draw fill
-                gc.setFill(toBePainted.viewFillColor());
-                gc.fillRoundRect(critterX, critterY, critterWidth, critterHeight, critterWidth/4.0,critterHeight/4.0);
-
-                //draw outline
-                gc.setStroke(toBePainted.viewOutlineColor());
-                gc.strokeRoundRect(critterX, critterY, critterWidth, critterHeight, critterWidth/4.0,critterHeight/4.0);
-
+                gc.fillRoundRect(critterX, critterY, critterWidth, critterHeight, critterWidth / 4.0, critterHeight / 4.0);
+                gc.strokeRoundRect(critterX, critterY, critterWidth, critterHeight, critterWidth / 4.0, critterHeight / 4.0);
                 break;
+
             case STAR:
                 drawPolygon(gc, toBePainted, star, canvWidth, xOffset, canvHeight, yOffset);
                 break;

@@ -10,31 +10,37 @@ import java.util.List;
 public class Util
 {
 
+
+    /**
+     * Written by Andy
+     * @return
+     */
     protected static ObservableList<String> getAllCritterClasses()
     {
-        ObservableList<String> allCritters = FXCollections.observableArrayList();
+        ObservableList<String> toRet = FXCollections.observableArrayList();
+        Class critterClass = Critter.class;
+        File dir = new File("./src/assignment5");
 
-        File workingDir = new File("./src/assignment5");
-
-        for (int i = 0; i < workingDir.list().length; i++)
+        for(int i = 0; i < dir.listFiles().length; i++)
         {
-            Class critterClass = Critter.class;
             try
             {
-                String className = workingDir.list()[i];
-                String critterName = className.substring(0, className.length() - 5); //have to remove ".java" part
-                String fullyQualifiedName = "assignment5." + critterName;
-                Class potentialCritter = Class.forName(fullyQualifiedName); //will not produce null as all classes for project are in this directory
-                if (critterClass.isAssignableFrom(potentialCritter) && !className.equals("Critter.java"))
-                    allCritters.add(critterName);
+                File curClass = dir.listFiles()[i];
+
+                Class testClass = Class.forName("assignment5." + curClass.getName().substring(0, curClass.getName().length()-5));
+
+                if(critterClass.isAssignableFrom(testClass))
+                {
+                    toRet.add(curClass.getName().substring(0, curClass.getName().length()-5));
+                }
             }
-            //
             catch (Exception e)
             {
             }
         }
+        toRet.removeAll("Critter");
 
-        return allCritters;
+        return toRet;
     }
 
 
