@@ -11,8 +11,6 @@ import javafx.scene.paint.Paint;
 import javafx.util.Duration;
 
 
-
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
@@ -20,7 +18,7 @@ public class View
 {
     //CONFIGS
     public static final double worldBoxScale = 0.94;
-    // public static final double critterSpriteScale = 0.5;
+
     public static final Paint worldBoxFillColor = javafx.scene.paint.Color.GRAY;
     public static final Paint worldBoxLineColor = javafx.scene.paint.Color.BLACK;
 
@@ -41,11 +39,11 @@ public class View
         timeline = new Timeline();
         timeline.setCycleCount(Animation.INDEFINITE);
 
-         moveBall = new KeyFrame(Duration.seconds(1.0/animSpeed),
-                new EventHandler<ActionEvent>() {
-
-                    public void handle(ActionEvent event) {
-
+        moveBall = new KeyFrame(Duration.seconds(1.0 / animSpeed),
+                new EventHandler<ActionEvent>()
+                {
+                    public void handle(ActionEvent event)
+                    {
                         Critter.worldTimeStep();
                         Critter.displayWorld(Main.displayCanvas);
                     }
@@ -53,21 +51,6 @@ public class View
 
         timeline.getKeyFrames().add(moveBall);
         timeline.stop();
-
-        /*
-        KeyFrame animate = new KeyFrame(Duration.seconds(1.0 / animSpeed), event ->
-        {
-            System.out.println("TEST");
-            if (anim == true)
-            {
-                Critter.worldTimeStep();
-                Critter.displayWorld(Main.displayCanvas);
-            }
-        });
-
-        timeline.getKeyFrames().add(animate);
-        timeline.play();
-        */
 
     }
 
@@ -136,6 +119,7 @@ public class View
         Critter.CritterShape critShape = toBePainted.viewShape();
         gc.setStroke(toBePainted.viewOutlineColor());
         gc.setFill(toBePainted.viewFillColor());
+
         switch (critShape)
         {
             case CIRCLE:
@@ -159,7 +143,6 @@ public class View
                 break;
 
             default:
-
                 break;
         }
     }
