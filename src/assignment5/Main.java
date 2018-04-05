@@ -22,7 +22,7 @@ public class Main extends Application
 
 
     //View Component
-    public static Canvas displayCanvas;
+    protected static Canvas displayCanvas;
 
     public static void main(String[] args)
     {
@@ -46,7 +46,6 @@ public class Main extends Application
         Controller.makeController();
 
         Critter.displayWorld(displayCanvas);
-
         primaryStage.setScene(world);
 
         View.initKeyframe();
@@ -54,23 +53,8 @@ public class Main extends Application
         primaryStage.show();
         primaryStage.setOnHiding(e -> System.exit(0));
 
-
         //If resize
-        world.heightProperty().addListener(new ChangeListener<Number>()
-        {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue)
-            {
-                Critter.displayWorld(displayCanvas);
-            }
-        });
-        world.widthProperty().addListener(new ChangeListener<Number>()
-        {
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue)
-            {
-                Critter.displayWorld(displayCanvas);
-            }
-        });
+        world.heightProperty().addListener((observable, oldValue, newValue) -> Critter.displayWorld(displayCanvas));
+        world.widthProperty().addListener((observable, oldValue, newValue) -> Critter.displayWorld(displayCanvas));
     }
 }
