@@ -1,9 +1,7 @@
 package assignment5;
 
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
+
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -11,11 +9,15 @@ import java.util.List;
 
 public abstract class Critter
 {
-    private static String myPackage;
+    private static String myPackage = Critter.class.getPackage().toString().split(" ")[1];
     private static List<Critter> population = new java.util.ArrayList<Critter>();
     private static List<Critter> babies = new java.util.ArrayList<Critter>();
     private static java.util.Random rand = new java.util.Random();
 
+    private int energy = 0;
+    private int x_coord;
+    private int y_coord;
+    private boolean canMoveThisTurn;
 
     /**
      * default constructor
@@ -27,16 +29,6 @@ public abstract class Critter
         this.energy = Params.start_energy;
     }
 
-    // Gets the package name.  This assumes that Critter and its subclasses are all in the same package.
-    static
-    {
-        myPackage = Critter.class.getPackage().toString().split(" ")[1];
-    }
-
-    private int energy = 0;
-    private int x_coord;
-    private int y_coord;
-    private boolean canMoveThisTurn;
 
     public static int getRandomInt(int max)
     {
@@ -47,8 +39,6 @@ public abstract class Critter
     {
         rand = new java.util.Random(new_seed);
     }
-
-    /* rest is unchanged from Project 4 */
 
     private boolean sameLocation(Critter crit2)
     {
@@ -213,12 +203,6 @@ public abstract class Critter
         return toRet;
     }
 
-    public static String runStats(List<Critter> critters)
-    {
-        return "";
-        //TODO
-    }
-
     /**
      * Clear the world of all critters, dead and alive
      */
@@ -228,8 +212,7 @@ public abstract class Critter
         babies.clear();
     }
 
-
-    //returns population in matrix form
+    //returns a subset of population to display, in matrix form
     protected static Critter[][] getCritterWHMatrix()
     {
         Critter[][] toRet = new Critter[Params.world_width][Params.world_height];
@@ -245,18 +228,8 @@ public abstract class Critter
         return toRet;
     }
 
-    /* the default color is white, which I hope makes critters invisible by default
-     * If you change the background color of your View component, then update the default
-     * color to be the same as you background
-     *
-     * critters must override at least one of the following three methods, it is not
-     * proper for critters to remain invisible in the view
-     *
-     * If a critter only overrides the outline color, then it will look like a non-filled
-     * shape, at least, that's the intent. You can edit these default methods however you
-     * need to, but please preserve that intent as you implement them.
-     */
-    public javafx.scene.paint.Color viewColor()
+
+    public  javafx.scene.paint.Color viewColor()
     {
         return javafx.scene.paint.Color.WHITE;
     }

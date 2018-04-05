@@ -1,6 +1,6 @@
 package assignment5;
 
-import javafx.animation.KeyFrame;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -10,7 +10,6 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.util.*;
@@ -20,13 +19,14 @@ import javafx.scene.control.Alert.AlertType;
 public class Controller
 {
     private static TextArea stats;
-
     private static Slider slider;
-
-
     private static Label curSpeed;
     public static String myPackage = Critter.class.getPackage().toString().split(" ")[1];
 
+
+    /**
+     * Makes the Controller Window
+     */
     protected static void makeController()
     {
         Stage controls = new Stage();
@@ -39,7 +39,6 @@ public class Controller
         setSeedPane(controlsGridPane);
         logPane(controlsGridPane);
         AnimationPane(controlsGridPane);
-
         QuitPane(controlsGridPane);
 
         controlsGridPane.setGridLinesVisible(true);
@@ -51,6 +50,10 @@ public class Controller
     }
 
 
+    /**
+     * Positions the quit button on the Controller
+     * @param controlsGridPane
+     */
     protected static void QuitPane(GridPane controlsGridPane)
     {
         GridPane quitButtonGridPane = new GridPane();
@@ -64,6 +67,10 @@ public class Controller
         controlsGridPane.add(quitButtonGridPane, 0, 7);
     }
 
+    /**
+     * Positions the Critter controls on the Controller
+     * @param mainPane
+     */
     protected static void CrittersPane(GridPane mainPane)
     {
         GridPane CrittersPane = new GridPane();
@@ -120,6 +127,10 @@ public class Controller
         mainPane.add(CrittersPane, 0, 0);
     }
 
+    /**
+     * Positions the log on the Controller
+     * @param mainPane
+     */
     protected static void logPane(GridPane mainPane)
     {
         stats = new TextArea("Statistics displayed here");
@@ -127,6 +138,10 @@ public class Controller
         mainPane.add(stats, 0, 6, 1, 1);
     }
 
+    /**
+     * Positions the seed controls on the Controller
+     * @param mainPane
+     */
     protected static void setSeedPane(GridPane mainPane)
     {
         GridPane seedPane = new GridPane();
@@ -171,6 +186,10 @@ public class Controller
         mainPane.add(seedPane, 0, 2);
     }
 
+    /**
+     * Positions the time step controls on the Controller
+     * @param mainPane
+     */
     protected static void TimeStepPane(GridPane mainPane)
     {
         GridPane timeStepGridPane = new GridPane();
@@ -216,6 +235,10 @@ public class Controller
         mainPane.add(timeStepGridPane, 0, 1);
     }
 
+    /**
+     * Positions the animation controls on the controller
+     * @param mainPane
+     */
     protected static void AnimationPane(GridPane mainPane)
     {
         GridPane animsPane = new GridPane();
@@ -261,6 +284,10 @@ public class Controller
         mainPane.add(animsPane, 0, 5);
     }
 
+    /**
+     * Event handler for the animate button
+     * @param but
+     */
     private static void animateButtonEventHandler(Button but)
     {
         View.anim = !View.anim;
@@ -280,7 +307,10 @@ public class Controller
         }
     }
 
-
+    /**
+     * Events handler for the runStats button
+     * @param text
+     */
     private static void runStatsEventHandler(String text)
     {
         String displayString;
@@ -318,6 +348,10 @@ public class Controller
 
     }
 
+    /**
+     * Events handler for the time step button
+     * @param numSteps
+     */
     private static void timeStepEventHandler(int numSteps)
     {
         for (int i = 0; i < numSteps; i++)
@@ -327,6 +361,11 @@ public class Controller
         Critter.displayWorld(Main.displayCanvas);
     }
 
+    /**
+     * Events handler for the make Critter buttons
+     * @param type
+     * @param quantity
+     */
     private static void makeCritterHandler(String type, int quantity)
     {
         if (type == null)

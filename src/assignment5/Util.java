@@ -4,16 +4,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+
 
 public class Util
 {
-
-
     /**
      * Written by Andy
-     * @return
+     * @return list of all Critter types
      */
     protected static ObservableList<String> getAllCritterClasses()
     {

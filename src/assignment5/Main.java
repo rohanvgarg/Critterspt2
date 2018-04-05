@@ -3,37 +3,19 @@ package assignment5;
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
+
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.*;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.layout.BorderPane;
+
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import javafx.scene.paint.Color;
 
 
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class Main extends Application
 {
-
-    //CONTROLLER SHIT
-    public static ComboBox<String> critterSelectComboBox;
-    public static Button timeStepButton;
-    public static Button quitButton;
-    public static Button makeButton1;
-    public static Button makeButton5;
-    public static Button makeButton10;
-    public static Button runStatsButton;
-
-    public static TextArea stats;
-
     //main variables for animation
     //main variables for drawing
     static GridPane grid = new GridPane();
@@ -90,6 +72,5 @@ public class Main extends Application
                 Critter.displayWorld(displayCanvas);
             }
         });
-
     }
 }
