@@ -1,5 +1,8 @@
 package assignment5;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -7,6 +10,13 @@ import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
 
 import javafx.scene.shape.Shape;
+import javafx.util.Duration;
+
+
+
+
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 
 public class View
 {
@@ -20,6 +30,48 @@ public class View
     private final static double[][] triangle = {{0.50, 0.06}, {0.06, 0.78}, {0.94, 0.78}};
     private final static double[][] diamond = {{0.50, 0.06}, {0.25, 0.50}, {0.50, 0.94}, {0.75, 0.50}};
     private final static double[][] star = {{0.20, 0.95}, {0.50, 0.75}, {0.80, 0.95}, {0.68, 0.60}, {0.95, 0.40}, {0.62, 0.38}, {0.50, 0.05}, {0.38, 0.38}, {0.05, 0.40}, {0.32, 0.64}};
+
+    //Animation
+    protected static double animSpeed = 1.0;
+    protected static boolean anim = false;
+    protected static Timeline timeline;
+    protected static KeyFrame moveBall;
+
+
+    protected static void initKeyframe()
+    {
+        timeline = new Timeline();
+        timeline.setCycleCount(Animation.INDEFINITE);
+
+         moveBall = new KeyFrame(Duration.seconds(1.0/animSpeed),
+                new EventHandler<ActionEvent>() {
+
+                    public void handle(ActionEvent event) {
+
+                        Critter.worldTimeStep();
+                        Critter.displayWorld(Main.displayCanvas);
+                    }
+                });
+
+        timeline.getKeyFrames().add(moveBall);
+        timeline.stop();
+
+        /*
+        KeyFrame animate = new KeyFrame(Duration.seconds(1.0 / animSpeed), event ->
+        {
+            System.out.println("TEST");
+            if (anim == true)
+            {
+                Critter.worldTimeStep();
+                Critter.displayWorld(Main.displayCanvas);
+            }
+        });
+
+        timeline.getKeyFrames().add(animate);
+        timeline.play();
+        */
+
+    }
 
 
     protected static void displayWorld(Canvas pane)

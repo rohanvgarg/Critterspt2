@@ -1,5 +1,6 @@
 package assignment5;
 
+import javafx.animation.KeyFrame;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
@@ -19,6 +20,11 @@ import javafx.scene.control.Alert.AlertType;
 public class Controller
 {
     private static TextArea stats;
+
+    private static Slider slider;
+
+
+    private static Label curSpeed;
     public static String myPackage = Critter.class.getPackage().toString().split(" ")[1];
 
     protected static void makeController()
@@ -32,6 +38,7 @@ public class Controller
         TimeStepPane(controlsGridPane);
         setSeedPane(controlsGridPane);
         logPane(controlsGridPane);
+        AnimationPane(controlsGridPane);
 
         QuitPane(controlsGridPane);
 
@@ -54,7 +61,7 @@ public class Controller
         quitButton.setText("Quit");
         quitButton.setOnAction(e -> System.exit(0));
         quitButtonGridPane.add(quitButton, 0, 0);
-        controlsGridPane.add(quitButtonGridPane, 0, 5);
+        controlsGridPane.add(quitButtonGridPane, 0, 7);
     }
 
     protected static void CrittersPane(GridPane mainPane)
@@ -86,7 +93,7 @@ public class Controller
         makeButton10.setText("Add 10");
         makeButton10.setOnAction(e -> makeCritterHandler((String) critterSelectComboBox.getValue(), 10));
 
-        Button  runStatsButton = new Button();
+        Button runStatsButton = new Button();
         runStatsButton.setText("Run Stats");
         runStatsButton.setOnAction(e -> runStatsEventHandler((String) critterSelectComboBox.getValue()));
 
@@ -113,49 +120,11 @@ public class Controller
         mainPane.add(CrittersPane, 0, 0);
     }
 
-
     protected static void logPane(GridPane mainPane)
     {
-         stats = new TextArea("Statistics displayed here");
+        stats = new TextArea("Statistics displayed here");
 
-        mainPane.add(stats, 0, 5, 1, 1);
-    }
-
-    private static void runStatsEventHandler(String text)
-    {
-        String displayString;
-        List<Critter> critterList;
-
-        try
-        {
-            critterList = Critter.getInstances(text);
-            try
-            {
-                Class<?> inClass = Class.forName(myPackage + "." + text);
-                java.lang.reflect.Method inMethod = inClass.getMethod("runStats", List.class);
-
-                displayString = (String) inMethod.invoke(null, critterList);
-
-                stats.appendText("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
-
-                stats.appendText("\n" + displayString + "\n");
-            } catch (Exception ex)
-            {
-                ex.printStackTrace();
-                throw new InvalidCritterException(text);
-            }
-
-        } catch (InvalidCritterException ex)
-        {
-            Alert alert = new Alert(AlertType.INFORMATION);
-            alert.setTitle("Error");
-            alert.setHeaderText(null);
-            alert.setContentText("Invalid Critter Exception");
-            alert.showAndWait();
-            return;
-
-        }
-
+        mainPane.add(stats, 0, 6, 1, 1);
     }
 
     protected static void setSeedPane(GridPane mainPane)
@@ -202,7 +171,6 @@ public class Controller
         mainPane.add(seedPane, 0, 2);
     }
 
-
     protected static void TimeStepPane(GridPane mainPane)
     {
         GridPane timeStepGridPane = new GridPane();
@@ -246,6 +214,108 @@ public class Controller
         timeStepGridPane.add(timeStepButton, 0, 2);
 
         mainPane.add(timeStepGridPane, 0, 1);
+    }
+
+    protected static void AnimationPane(GridPane mainPane)
+    {
+        GridPane animsPane = new GridPane();
+
+        animsPane.setHgap(10);
+        animsPane.setVgap(10);
+        animsPane.setPadding(new Insets(5, 5, 5, 5));
+
+        Label animsLabel = new Label();
+        animsLabel.setText("Animation Menu");
+        animsPane.add(animsLabel, 0, 0);
+
+        Label speedLabel = new Label();
+        speedLabel.setText("Animation Speed");
+        animsPane.add(speedLabel, 1, 1);
+
+         slider = new Slider(1, 10, 1);
+        slider.setShowTickLabels(true);
+        slider.setMajorTickUnit(1.0);
+        slider.setSnapToTicks(true);
+        animsPane.add(slider, 2, 1);
+
+        curSpeed = new Label(String.valueOf(((Double) (slider.getValue())).intValue()));
+
+        animsPane.add(curSpeed, 3, 1);
+
+        slider.valueProperty().addListener(new ChangeListener<Number>()
+        {
+            @Override
+            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue)
+            {
+                View.animSpeed = (Double) newValue;
+                View.animSpeed = Math.floor(View.animSpeed);
+                curSpeed.setText(String.valueOf(((Double) (slider.getValue())).intValue()));
+                View.initKeyframe();
+            }
+        });
+        Button animateButton = new Button();
+        animateButton.setText("Start Animation");
+        animateButton.setOnAction(e -> animateButtonEventHandler(animateButton));
+        animsPane.add(animateButton, 0, 1);
+
+        mainPane.add(animsPane, 0, 5);
+    }
+
+    private static void animateButtonEventHandler(Button but)
+    {
+        View.anim = !View.anim;
+
+        if(View.anim == true)
+        {
+            but.setText("Stop animating");
+            View.timeline.play();
+            slider.setDisable(true);
+
+        }
+        else
+        {
+            but.setText("Start animating");
+            View.timeline.pause();
+            slider.setDisable(false);
+        }
+    }
+
+
+    private static void runStatsEventHandler(String text)
+    {
+        String displayString;
+        List<Critter> critterList;
+
+        try
+        {
+            critterList = Critter.getInstances(text);
+            try
+            {
+                Class<?> inClass = Class.forName(myPackage + "." + text);
+                java.lang.reflect.Method inMethod = inClass.getMethod("runStats", List.class);
+
+                displayString = (String) inMethod.invoke(null, critterList);
+
+                stats.appendText("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+
+                stats.appendText("\n" + displayString + "\n");
+            } catch (Exception ex)
+            {
+                ex.printStackTrace();
+                throw new InvalidCritterException(text);
+            }
+
+        } catch (InvalidCritterException ex)
+        {
+            Alert alert = new Alert(AlertType.INFORMATION);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Invalid Critter Exception");
+            alert.showAndWait();
+            return;
+
+        }
+
     }
 
     private static void timeStepEventHandler(int numSteps)

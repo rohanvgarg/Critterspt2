@@ -46,10 +46,8 @@ public class Main extends Application
         KeyFrame moveBall = new KeyFrame(Duration.seconds(.000500),
                 new EventHandler<ActionEvent>()
                 {
-
                     public void handle(ActionEvent event)
                     {
-
                         double xMin = ball.getBoundsInParent().getMinX();
                         double yMin = ball.getBoundsInParent().getMinY();
                         double xMax = ball.getBoundsInParent().getMaxX();

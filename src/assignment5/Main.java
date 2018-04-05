@@ -66,6 +66,9 @@ public class Main extends Application
         Critter.displayWorld(displayCanvas);
 
         primaryStage.setScene(world);
+
+        View.initKeyframe();
+
         primaryStage.show();
         primaryStage.setOnHiding(e -> System.exit(0));
 

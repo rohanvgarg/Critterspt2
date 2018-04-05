@@ -134,7 +134,6 @@ public abstract class Critter
         {
             for (int i = 0; i < algae; i++)
             {
-                System.out.println("!!!!!!!!!!!!!!!");
                 makeCritter("Algae");
 
             }
