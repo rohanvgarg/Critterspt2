@@ -1,17 +1,17 @@
-package assignment5;
-/* CRITTERS Critter.java
- * EE422C Project 4 submission by
+/* CRITTERS MODEL Critter2.java
+ * EE422C Project 5 submission by
  * Yuan Chang
  * YC23988
  * 15500
  * Rohan Garg
- * rg42255
+ * RG42255
  * 15500
- * Slip days used: 0
+ * Slip days used: <0>
  * Spring 2018
  */
 
-//ANDY's CRITTER
+package assignment5;
+
 
 import javafx.scene.paint.Color;
 

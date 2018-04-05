@@ -1,3 +1,16 @@
+/* CRITTERS VIEW View.java
+ * EE422C Project 5 submission by
+ * Yuan Chang
+ * YC23988
+ * 15500
+ * Rohan Garg
+ * RG42255
+ * 15500
+ * Slip days used: <0>
+ * Spring 2018
+ */
+
+
 package assignment5;
 
 import javafx.animation.Animation;
@@ -5,12 +18,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-
 import javafx.scene.paint.Paint;
-
 import javafx.util.Duration;
-
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 

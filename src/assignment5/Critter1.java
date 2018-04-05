@@ -1,3 +1,16 @@
+/* CRITTERS MODEL Critter1.java
+ * EE422C Project 5 submission by
+ * Yuan Chang
+ * YC23988
+ * 15500
+ * Rohan Garg
+ * RG42255
+ * 15500
+ * Slip days used: <0>
+ * Spring 2018
+ */
+
+
 package assignment5;
 
 

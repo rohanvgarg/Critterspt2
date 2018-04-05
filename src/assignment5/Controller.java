@@ -1,3 +1,15 @@
+/* CRITTERS GUI Controller.java
+ * EE422C Project 5 submission by
+ * Yuan Chang
+ * YC23988
+ * 15500
+ * Rohan Garg
+ * RG42255
+ * 15500
+ * Slip days used: <0>
+ * Spring 2018
+ */
+
 package assignment5;
 
 
@@ -18,7 +30,6 @@ public class Controller
     protected static TextArea stats;
     private static Slider slider;
     private static Label curSpeed;
-    public static String myPackage = Critter.class.getPackage().toString().split(" ")[1];
 
 
     protected static ComboBox critterSelectComboBox;
@@ -319,7 +330,6 @@ public class Controller
             makeButton10.setDisable(true);
             timeStepButton.setDisable(true);
             seedButton.setDisable(true);
-
             runStatsButton.setDisable(true);
             rb1.setDisable(true);
             rb5.setDisable(true);
@@ -333,14 +343,12 @@ public class Controller
             but.setText("Start animating");
             View.timeline.pause();
             slider.setDisable(false);
-
             makeButton1.setDisable(false);
             makeButton5.setDisable(false);
             makeButton10.setDisable(false);
             timeStepButton.setDisable(false);
             seedButton.setDisable(false);
             runStatsButton.setDisable(false);
-
             rb1.setDisable(false);
             rb5.setDisable(false);
             rb20.setDisable(false);
