@@ -31,6 +31,16 @@ public class Critter1 extends Critter
      */
     public boolean fight(String opponent)
     {
+
+        /*String lookResult = this.look(direction, true);
+
+        if(lookResult == null)
+        {
+            return false;
+        }
+        else
+            return true;*/
+
         if (opponent.equalsIgnoreCase("Algae"))
         {
             return true;
@@ -69,6 +79,14 @@ public class Critter1 extends Critter
             offspring++;
         } else
         {
+            int chanceOfLook = Critter.getRandomInt(2);
+            if(chanceOfLook ==1)
+            {
+                int randomDir = Critter.getRandomInt(8);
+                this.look(randomDir, true);
+            }
+
+
             walk(direction);
             direction = getRandomInt((direction + 1) % 9);
         }
