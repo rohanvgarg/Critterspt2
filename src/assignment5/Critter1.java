@@ -82,7 +82,7 @@ public class Critter1 extends Critter
             int chanceOfLook = Critter.getRandomInt(2);
             if(chanceOfLook ==1)
             {
-                int randomDir = Critter.getRandomInt(8)
+                int randomDir = Critter.getRandomInt(8);
                 this.look(randomDir, true);
             }
 

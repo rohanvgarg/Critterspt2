@@ -47,6 +47,14 @@ public class Critter2 extends Critter
     public boolean fight(String opponent)
     {
         n++;
+
+        int chanceOfLook = Critter.getRandomInt(2);
+        if(chanceOfLook ==1)
+        {
+            int randomDir = Critter.getRandomInt(8);
+            this.look(randomDir, true);
+        }
+
         if (opponent.equalsIgnoreCase("Algae") || getRandomInt(100) > 20)
         {
             fights++;
